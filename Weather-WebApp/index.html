@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#071225">
+  <meta name="description" content="ClimaVanta - current conditions and forecasts for cities around the world.">
+  <title>ClimaVanta - Live Weather</title>
+  <link rel="icon" type="image/png" href="images/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/script.js" defer></script>
+</head>
+<body>
+  <div class="ambient ambient-one"></div>
+  <div class="ambient ambient-two"></div>
+
+  <header class="topbar">
+    <a class="brand" href="#home" data-page="home" aria-label="ClimaVanta home">
+      <img src="images/logo.png" alt="ClimaVanta Logo" class="brand-logo">
+      <span>
+        <strong>Clima<span>Vanta</span></strong>
+        <small>Live Weather · Better Tomorrow</small>
+      </span>
+    </a>
+
+    <nav class="main-nav" aria-label="Main navigation">
+      <a class="nav-link active" href="#home" data-page="home">⌂ <span>Home</span></a>
+      <a class="nav-link" href="#favorites" data-page="favorites">♡ <span>Favorites</span></a>
+      <a class="nav-link" href="#settings" data-page="settings">⚙ <span>Settings</span></a>
+    </nav>
+
+    <button id="themeToggle" class="icon-button" type="button" aria-label="Toggle light theme" title="Toggle theme">☾</button>
+  </header>
+
+  <!-- home -->
+  <main class="page active" id="page-home">
+    <div class="page-shell">
+      <section class="search-row" aria-label="City search">
+        <form id="searchForm" class="search-form">
+          <span class="search-symbol" aria-hidden="true">⌕</span>
+          <label class="sr-only" for="cityInput">Search for a city</label>
+          <input id="cityInput" name="city" type="search" placeholder="Search a city… e.g. Lahore, London" autocomplete="off" maxlength="100" required>
+          <button class="primary-button" type="submit">Search <span aria-hidden="true">↗</span></button>
+        </form>
+        <button id="locationButton" class="secondary-button" type="button">⌖ Use my location</button>
+      </section>
+
+      <p id="statusMessage" class="status-message" role="status" aria-live="polite">Loading weather…</p>
+
+      <section class="dashboard-grid">
+        <article class="panel current-panel">
+          <div class="current-content">
+            <div class="eyebrow"><span class="live-dot"></span> LIVE WEATHER</div>
+            <div class="location-line">
+              <div class="location-info">
+                <h1 id="cityName">Lahore</h1>
+                <p id="locationMeta" class="muted">Pakistan</p>
+              </div>
+              <div class="location-actions">
+                <button id="refreshButton" class="refresh-button" type="button" aria-label="Refresh weather" title="Refresh weather">↻</button>
+                <button id="favoriteButton" class="favorite-button" type="button" aria-pressed="false" title="Save this city">♡</button>
+              </div>
+            </div>
+            <p id="currentDate" class="muted date-line">Weather for your day</p>
+            <div class="temperature-line">
+              <span id="currentIcon" class="weather-emoji" aria-hidden="true">🌤️</span>
+              <div>
+                <div class="temperature">
+                  <span id="currentTemp">--</span><span class="degree" id="tempUnitMain">°C</span>
+                </div>
+                <p id="conditionText" class="condition">Getting conditions…</p>
+                <p class="muted feels-line">Feels like <strong id="feelsLike">--°</strong></p>
+              </div>
+            </div>
+            <div class="metric-grid">
+              <div class="metric"><span class="metric-icon">💧</span><span class="muted">Humidity</span><strong id="humidity">--%</strong></div>
+              <div class="metric"><span class="metric-icon">〰️</span><span class="muted">Wind speed</span><strong id="windSpeed">-- km/h</strong></div>
+              <div class="metric"><span class="metric-icon">◉</span><span class="muted">Pressure</span><strong id="pressure">-- hPa</strong></div>
+              <div class="metric"><span class="metric-icon">☁️</span><span class="muted">Cloud cover</span><strong id="cloudCover">--%</strong></div>
+            </div>
+          </div>
+          <div class="current-art" aria-hidden="true">
+            <div class="orb"></div>
+            <div class="cloud cloud-back"></div>
+            <div class="cloud cloud-front"></div>
+            <div class="stars">✦　 ·　✧</div>
+          </div>
+        </article>
+
+        <article class="panel highlights-panel">
+          <div class="section-heading">
+            <div><span class="heading-icon">✦</span><h2>Today's highlights</h2></div>
+            <span class="live-label">LIVE</span>
+          </div>
+          <div class="highlight-row"><span class="highlight-icon warm">↑</span><span class="muted">Feels like</span><strong id="highlightFeels">--°</strong></div>
+          <div class="highlight-row"><span class="highlight-icon blue">💧</span><span class="muted">Humidity</span><strong id="highlightHumidity">--%</strong></div>
+          <div class="highlight-row"><span class="highlight-icon purple">〰</span><span class="muted">Wind</span><strong id="highlightWind">-- km/h</strong></div>
+          <div class="highlight-row"><span class="highlight-icon green">☼</span><span class="muted">UV index</span><strong id="uvIndex">--</strong></div>
+          <div class="sun-times">
+            <div><span class="sun-symbol">🌅</span><span class="muted">Sunrise</span><strong id="sunrise">--:--</strong></div>
+            <div><span class="sun-symbol">🌇</span><span class="muted">Sunset</span><strong id="sunset">--:--</strong></div>
+          </div>
+        </article>
+
+        <article class="panel hourly-panel">
+          <div class="section-heading">
+            <div><span class="heading-icon">◷</span><h2>Hourly forecast</h2></div>
+            <span class="muted small">Coming hours</span>
+          </div>
+          <div id="hourlyForecast" class="hourly-list">
+            <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
+          </div>
+        </article>
+
+        <article class="panel forecast-panel">
+          <div class="section-heading">
+            <div><span class="heading-icon">▦</span><h2>7-day forecast</h2></div>
+          </div>
+          <div id="dailyForecast" class="daily-list">
+            <div class="skeleton"></div><div class="skeleton"></div>
+          </div>
+        </article>
+
+        <article class="panel precip-panel">
+          <div class="section-heading">
+            <div><span class="heading-icon">☔</span><h2>Precipitation</h2></div>
+          </div>
+          <div class="precip-body">
+            <div class="precip-big">
+              <span class="precip-value" id="precipChance">--%</span>
+              <span class="muted small">chance today</span>
+            </div>
+            <div class="precip-details">
+              <div><span class="muted small">Right now</span><strong id="precipNow">-- mm</strong></div>
+              <div><span class="muted small">Daily total</span><strong id="precipMax">-- mm</strong></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="panel wind-panel">
+          <div class="section-heading">
+            <div><span class="heading-icon">💨</span><h2>Wind</h2></div>
+          </div>
+          <div class="wind-body">
+            <div class="compass">
+              <div class="compass-ring">
+                <span class="compass-n">N</span>
+                <span class="compass-e">E</span>
+                <span class="compass-s">S</span>
+                <span class="compass-w">W</span>
+                <div class="compass-arrow" id="windArrow"></div>
+              </div>
+            </div>
+            <div class="wind-stats">
+              <div><span class="muted">Speed</span><strong id="windValue">-- km/h</strong></div>
+              <div><span class="muted">Gusts</span><strong id="windGusts">-- km/h</strong></div>
+              <div><span class="muted">From</span><strong id="windDir">--</strong></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="panel recent-panel">
+          <div class="section-heading">
+            <div><span class="heading-icon">↻</span><h2>Recent searches</h2></div>
+            <button id="clearRecent" class="text-button" type="button">Clear</button>
+          </div>
+          <div id="recentList" class="recent-list scroll-area">
+            <p class="muted empty-state">Your recent searches will appear here.</p>
+          </div>
+        </article>
+
+        <article class="panel tips-panel">
+          <div class="section-heading">
+            <div><span class="heading-icon">✧</span><h2>Weather insight</h2></div>
+          </div>
+          <div class="insight-content">
+            <span id="insightIcon" class="insight-emoji">🌦️</span>
+            <div>
+              <h3 id="insightTitle">Stay weather-ready</h3>
+              <p id="weatherTip" class="muted">Search a city to get a useful tip based on its current weather.</p>
+            </div>
+          </div>
+          <p class="data-credit">Weather data provided by <a href="https://open-meteo.com/" target="_blank" rel="noreferrer">Open-Meteo</a>.</p>
+        </article>
+      </section>
+    </div>
+  </main>
+
+  <!-- favorites -->
+  <main class="page" id="page-favorites">
+    <div class="page-shell">
+      <div class="page-header">
+        <h1 class="page-title">♡ Favorite cities</h1>
+        <p class="muted">Quickly access the weather for the places you care about most.</p>
+      </div>
+
+      <article class="panel">
+        <div class="section-heading">
+          <div><span class="heading-icon">⌖</span><h2>Your saved cities</h2></div>
+          <span id="favoriteCount" class="muted small">0 saved</span>
+        </div>
+        <div id="favoriteList" class="saved-list scroll-area tall"></div>
+      </article>
+    </div>
+  </main>
+
+  <!-- settings -->
+  <main class="page" id="page-settings">
+    <div class="page-shell">
+      <div class="page-header">
+        <h1 class="page-title">⚙ Settings</h1>
+        <p class="muted">Customize your ClimaVanta experience.</p>
+      </div>
+
+      <div class="settings-grid">
+        <article class="panel">
+          <h2 class="panel-title">🌡 Temperature units</h2>
+          <p class="muted">Choose how temperatures are displayed across the app.</p>
+          <div class="segmented-control" role="group" aria-label="Temperature units">
+            <button id="celsiusButton" class="selected" type="button" aria-pressed="true">°C</button>
+            <button id="fahrenheitButton" type="button" aria-pressed="false">°F</button>
+          </div>
+        </article>
+
+        <article class="panel">
+          <h2 class="panel-title">🎨 Display theme</h2>
+          <p class="muted">Switch between dark and light mode.</p>
+          <button id="themeSettingButton" class="secondary-button" type="button">☾ Dark mode</button>
+        </article>
+
+        <article class="panel">
+          <h2 class="panel-title">ℹ About ClimaVanta</h2>
+          <p class="muted">ClimaVanta is a clean, modern web application that provides real-time weather conditions and accurate 7-day forecasts for cities around the world. Weather data is provided by <a href="https://open-meteo.com/" target="_blank" rel="noreferrer">Open-Meteo</a></p>
+        </article>
+      </div>
+    </div>
+  </main>
+
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
