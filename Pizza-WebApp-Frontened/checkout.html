@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>BENZO - Checkout</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="checkout.css">
+    <link rel="stylesheet" href="auth-shared.css">
+</head>
+<body>
+    <!-- ========== HEADER (identical to Home page) ========== -->
+    <header class="header" id="header">
+        <nav class="navbar">
+            <div class="navbar-left">
+                <button class="menu-btn" id="menuBtn" aria-label="Open menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <a href="Home.html" class="logo">
+                    <i class="fas fa-pizza-slice"></i> BENZO
+                </a>
+            </div>
+            <div class="navbar-right">
+                <!-- ─── LOGGED OUT ─── -->
+                <div id="authGroupLoggedOut" style="display:flex; gap:15px; align-items:center;">
+                    <a href="login.html" class="signup-btn" id="loginNavBtn">
+                        <i class="fas fa-right-to-bracket"></i> Login
+                    </a>
+                    <a href="sign-up.html" class="signup-btn" id="signupNavBtn">
+                        <i class="fas fa-user-plus"></i> Sign Up
+                    </a>
+                </div>
+                <!-- ─── LOGGED IN ─── -->
+                <div id="authGroupLoggedIn" style="display:none; gap:15px; align-items:center;">
+                    <a href="dashboard.html" class="signup-btn" id="dashboardNavBtn" style="background: linear-gradient(180deg, #28a745, #218838);">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </a>
+                    <button class="signup-btn" id="logoutNavBtn" style="background: #dc3545; border:none; padding:12px 20px; border-radius:10px; font-weight:600; cursor:pointer; color:white;">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+                <!-- ─── CART ─── -->
+                <a href="checkout.html" class="cart-btn">
+                    <i class="fas fa-shopping-cart"></i> Cart
+                    <span class="cart-count" id="cartCount">0</span>
+                </a>
+            </div>
+        </nav>
+    </header>
+    
+    <!-- ========== SIDEBAR ========== -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h3 class="sidebar-title">Menu</h3>
+            <button class="close-btn" id="closeBtn" aria-label="Close menu">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <ul class="sidebar-nav">
+            <!-- ─── REGULAR PAGES ─── -->
+            <li><a href="Home.html"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="About.html"><i class="fas fa-info-circle"></i> About</a></li>
+            <li><a href="Menue.html"><i class="fas fa-utensils"></i> Menu</a></li>
+            <li><a href="custom.html"><i class="fas fa-sliders-h"></i> Customize</a></li>
+            <li><a href="blog.html"><i class="fas fa-blog"></i> Blog</a></li>
+            <li><a href="Contact-us.html"><i class="fas fa-address-book"></i> Contact Us</a></li>
+            <li><a href="order-history.html"><i class="fas fa-clipboard-list"></i> Orders</a></li>
+            
+            <!-- ✅ REMOVED: Regular Dashboard link – JavaScript adds it on mobile only -->
+            
+            <!-- ─── CART BUTTON (MOBILE/TABLET) ─── -->
+            <li class="sidebar-cart-btn">
+                <a href="checkout.html" class="sidebar-cart-link">
+                    <i class="fas fa-shopping-cart"></i> Cart
+                    <span class="sidebar-cart-count" id="sidebarCartCount">0</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    
+    <!-- OVERLAY -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- CART NOTIFICATION -->
+    <div id="cartNotification" class="cart-notify">
+        Added to cart! 🍕
+    </div>
+
+    <!-- ========== MAIN CONTENT ========== -->
+    <div class="checkout-container">
+        <h1>🛒 Checkout</h1>
+
+        <!-- Cart content / empty state -->
+        <div id="cartContent"></div>
+        <div id="emptyCart" class="empty-cart" style="display:none;">
+            <p>Your cart is empty! 😊</p>
+            <p><a href="Menue.html">Browse Menu</a> or <a href="custom.html">Customize Pizza</a></p>
+        </div>
+
+        <!-- Checkout form -->
+        <div id="checkoutForm" class="checkout-form" style="display:none;">
+            <!-- Membership info (auto‑filled) -->
+            <div class="membership-info" id="membershipInfo"></div>
+
+            <h3>Delivery Information</h3>
+            <div class="delivery-options">
+                <div class="delivery-option selected" data-type="pickup" onclick="selectDelivery(this)">🚗 Pickup</div>
+                <div class="delivery-option" data-type="delivery" onclick="selectDelivery(this)">🏠 Delivery</div>
+            </div>
+            <div id="addressFields" style="display:none;">
+                <div class="form-group">
+                    <label>Delivery Address:</label>
+                    <textarea id="deliveryAddress" placeholder="Enter your full address..."></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Phone Number:</label>
+                <input type="tel" id="phone" placeholder="+1234567890" required>
+            </div>
+            <div class="form-group">
+                <label>Payment Method:</label>
+                <div class="payment-methods">
+                    <div class="payment-method selected" data-method="cash" onclick="selectPayment(this)">💵 Cash</div>
+                    <div class="payment-method" data-method="card" onclick="selectPayment(this)">💳 Card</div>
+                </div>
+            </div>
+            <button class="place-order-btn" onclick="placeOrder()">
+                Place Order - Rs.<span id="orderTotal">0</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Pizza Palace</h3>
+                <p>Delivering happiness, one slice at a time. Experience the taste of perfection with our artisanal pizzas made with love and the finest ingredients.</p>
+                <div class="footer-social">
+                    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="Home.html">Home</a></li>
+                    <li><a href="Menue.html">Menu</a></li>
+                    <li><a href="custom.html">Customize Pizza</a></li>
+                    <li><a href="About.html">About Us</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="Contact-us.html">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Info</h3>
+                <p><i class="fas fa-map-marker-alt"></i> 123 Pizza Street, Food City, FC 12345</p>
+                <p><i class="fas fa-phone"></i> (123) 456-7890</p>
+                <p><i class="fas fa-envelope"></i> info@pizzapalace.com</p>
+                <p><i class="fas fa-clock"></i> Open Daily: 11:00 AM - 11:00 PM</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Pizza Palace. All rights reserved. | Designed with <i class="fas fa-heart" style="color: #ff5a2e;"></i> for pizza lovers</p>
+        </div>
+    </footer>
+
+    <!-- ========== SCRIPTS ========== -->
+    <script src="api.js"></script>
+    <script src="navbar.js"></script>
+
+    <!-- ─── ✅ PROFESSIONAL AUTH GUARD ─── -->
+    <script>
+        (function() {
+            // Check if Api is loaded
+            if (typeof Api === 'undefined') {
+                console.warn('Api not loaded; auth guard skipped.');
+                return;
+            }
+
+            // If user is NOT logged in, redirect to login
+            if (!Api.isLoggedIn()) {
+                // Save the current page to session storage so we can return after login
+                sessionStorage.setItem('pizza_redirect_after_login', 'checkout.html');
+                window.location.href = 'login.html';
+            }
+        })();
+    </script>
+
+    <!-- ─── CHECKOUT PAGE LOGIC ─── -->
+    <script src="checkout.js"></script>
+</body>
+</html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>BENZO - Home</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="Home.css">
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header" id="header">
+        <nav class="navbar">
+            <div class="navbar-left">
+                <button class="menu-btn" id="menuBtn" aria-label="Open menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <a href="Home.html" class="logo">
+                    <i class="fas fa-pizza-slice"></i> BENZO
+                </a>
+            </div>
+            <div class="navbar-right">
+                <!-- ─── LOGGED OUT ─── -->
+                <div id="authGroupLoggedOut" style="display:flex; gap:15px; align-items:center;">
+                    <a href="login.html" class="signup-btn" id="loginNavBtn">
+                        <i class="fas fa-right-to-bracket"></i> Login
+                    </a>
+                    <a href="sign-up.html" class="signup-btn" id="signupNavBtn">
+                        <i class="fas fa-user-plus"></i> Sign Up
+                    </a>
+                </div>
+                <!-- ─── LOGGED IN ─── -->
+                <div id="authGroupLoggedIn" style="display:none; gap:15px; align-items:center;">
+                    <a href="dashboard.html" class="signup-btn" id="dashboardNavBtn" style="background: linear-gradient(180deg, #28a745, #218838);">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </a>
+                    <button class="signup-btn" id="logoutNavBtn" style="background: #dc3545; border:none; padding:12px 20px; border-radius:10px; font-weight:600; cursor:pointer; color:white;">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+                <!-- ─── CART ─── -->
+                <a href="checkout.html" class="cart-btn">
+                    <i class="fas fa-shopping-cart"></i> Cart
+                    <span class="cart-count" id="cartCount">0</span>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h3 class="sidebar-title">Menu</h3>
+            <button class="close-btn" id="closeBtn" aria-label="Close menu">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <ul class="sidebar-nav">
+            <li><a href="Home.html" class="active"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="About.html"><i class="fas fa-info-circle"></i> About</a></li>
+            <li><a href="Menue.html"><i class="fas fa-utensils"></i> Menu</a></li>
+            <li><a href="custom.html"><i class="fas fa-sliders-h"></i> Customize</a></li>
+            <li><a href="blog.html"><i class="fas fa-blog"></i> Blog</a></li>
+            <li><a href="Contact-us.html"><i class="fas fa-address-book"></i> Contact Us</a></li>
+            <li><a href="order-history.html"><i class="fas fa-clipboard-list"></i> Orders</a></li>
+            <!-- CART BUTTON FOR MOBILE/TABLET -->
+            <li class="sidebar-cart-btn">
+                <a href="checkout.html" class="sidebar-cart-link">
+                    <i class="fas fa-shopping-cart"></i> Cart
+                    <span class="sidebar-cart-count" id="sidebarCartCount">0</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+
+    <!-- MAIN CONTENT -->
+    <div class="container">
+        <h1>🍕 Welcome to BENZO</h1>
+        
+        <div class="hero-section">
+            <h2><i class="fas fa-pizza-slice"></i> Delicious Recipes</h2>
+            <p>Inappropriate behavior is often laughed off as "boys will be boys," but women face higher conduct standards in the workplace. That is why it is crucial that, as women, we stand together and support each other to create a more equitable environment for all. At Pizza Palace, we believe in treating everyone with respect and dignity.</p>
+            <div>
+                <a href="Menue.html" class="btn">CHECK OUR MENU</a>
+                <a href="custom.html" class="btn btn-secondary">CUSTOMIZE PIZZA</a>
+            </div>
+        </div>
+
+        <h2><i class="fas fa-star"></i> Why Choose Us</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-fire"></i></div>
+                <h3>Fresh Ingredients</h3>
+                <p>We use only the freshest, locally sourced ingredients for authentic flavors and quality that you can taste in every bite.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-clock"></i></div>
+                <h3>Fast Delivery</h3>
+                <p>Hot and fresh pizza delivered to your doorstep in 30 minutes or less. Guaranteed freshness or your money back!</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-utensils"></i></div>
+                <h3>Customizable</h3>
+                <p>Create your perfect pizza with our easy-to-use customization tool. Endless possibilities for your taste buds!</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-award"></i></div>
+                <h3>Award Winning</h3>
+                <p>Recognized as one of the best pizza places in the city for 3 consecutive years. Taste the award-winning difference!</p>
+            </div>
+        </div>
+
+        <h2><i class="fas fa-crown"></i> Popular Items</h2>
+        <div class="popular-items">
+            <div class="item-card">
+                <div class="item-img" style="background-image: url('https://images.unsplash.com/photo-1604068549290-dea0e4a305ca?w=400&q=80');"></div>
+                <div class="item-content">
+                    <h3>Margherita Pizza</h3>
+                    <p>Classic tomato sauce, fresh mozzarella, and basil leaves on our signature crust</p>
+                    <div class="item-price">$12.99</div>
+                </div>
+            </div>
+            <div class="item-card">
+                <div class="item-img" style="background-image: url('https://images.unsplash.com/photo-1628840042765-356cda07504e?w=400&q=80');"></div>
+                <div class="item-content">
+                    <h3>Pepperoni Feast</h3>
+                    <p>Double pepperoni with extra cheese and our special house sauce</p>
+                    <div class="item-price">$14.99</div>
+                </div>
+            </div>
+            <div class="item-card">
+                <div class="item-img" style="background-image: url('https://images.unsplash.com/photo-1595708684082-a173bb3a06c5?w=400&q=80');"></div>
+                <div class="item-content">
+                    <h3>BBQ Chicken</h3>
+                    <p>Grilled chicken, red onions, and barbecue sauce with mozzarella</p>
+                    <div class="item-price">$16.99</div>
+                </div>
+            </div>
+            <div class="item-card">
+                <div class="item-img" style="background-image: url('https://images.unsplash.com/photo-1601924582970-9238bcb495d9?w=400&q=80');"></div>
+                <div class="item-content">
+                    <h3>Veggie Supreme</h3>
+                    <p>Loaded with bell peppers, mushrooms, onions, olives, and tomatoes</p>
+                    <div class="item-price">$15.99</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <h2><i class="fas fa-bullhorn"></i> Ready to Taste Perfection?</h2>
+            <p>Join thousands of satisfied customers and experience pizza like never before. Customize your own or choose from our signature collection. Order now and get 20% off your first order!</p>
+            <a href="Menue.html" class="btn">ORDER YOUR PIZZA NOW</a>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Pizza Palace</h3>
+                <p>Delivering happiness, one slice at a time. Experience the taste of perfection with our artisanal pizzas made with love and the finest ingredients.</p>
+                <div class="footer-social">
+                    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="Home.html">Home</a></li>
+                    <li><a href="Menue.html">Menu</a></li>
+                    <li><a href="custom.html">Customize Pizza</a></li>
+                    <li><a href="About.html">About Us</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="Contact-us.html">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Info</h3>
+                <p><i class="fas fa-map-marker-alt"></i> 123 Pizza Street, Food City, FC 12345</p>
+                <p><i class="fas fa-phone"></i> (123) 456-7890</p>
+                <p><i class="fas fa-envelope"></i> info@pizzapalace.com</p>
+                <p><i class="fas fa-clock"></i> Open Daily: 11:00 AM - 11:00 PM</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Pizza Palace. All rights reserved. | Designed with <i class="fas fa-heart" style="color: #ff5a2e;"></i> for pizza lovers</p>
+        </div>
+    </footer>
+
+    <script src="api.js"></script>
+    <script src="navbar.js"></script>
+    <script src="Home.js"></script>
+</body>
+</html>

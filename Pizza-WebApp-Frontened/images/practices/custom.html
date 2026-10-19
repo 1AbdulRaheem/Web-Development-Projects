@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pizza Customizer - Smart Responsive Design</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { 
+      margin: 0; 
+      padding: 0; 
+      box-sizing: border-box; 
+      -webkit-tap-highlight-color: transparent; 
+    }
+    
+    html, body { 
+      height: 100%; 
+      scroll-behavior: smooth;
+    }
+    
+    body {
+      background: linear-gradient(rgba(5,5,5,0.85), rgba(10,10,10,0.85)),
+                  url('https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2000&q=80') center/cover no-repeat fixed;
+      color: #e7e7e7;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      min-height: 100vh;
+      line-height: 1.35;
+      padding-bottom: 20px;
+    }
+
+    /* CONTAINER */
+    .container {
+      max-width: 1400px;
+      margin: 20px auto;
+      padding: 20px;
+    }
+
+    /* HEADER / NAVBAR */
+    .header {
+      width: 100%;
+      background: rgba(15,15,15,0.85);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+    }  
+    
+    .navbar {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 8px 20px;
+    }
+
+    .navbar-list {
+      list-style: none;
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      align-items: center;
+      padding: 10px 0;
+      flex-wrap: wrap;
+    }
+
+    .navbar-list li {
+      display: inline-block;
+    }
+
+    /* Color Variables */
+    :root {
+      --accent: #ff5a2e;
+      --accent-2: #ff7a4c;
+      --muted: rgba(255,255,255,0.08);
+      --card-bg: rgba(25,25,25,0.8);
+      --card-hover: rgba(35,35,35,0.9);
+      --text-primary: #ffffff;
+      --text-secondary: #d6d6d6;
+    }
+
+    .navbar-list li a {
+      color: var(--text-primary);
+      text-decoration: none;
+      background: linear-gradient(180deg, rgba(255,90,46,0.15), rgba(255,90,46,0.08));
+      padding: 12px 20px;
+      border-radius: 50px;
+      font-weight: 700;
+      display: inline-block;
+      letter-spacing: 0.3px;
+      border: 1px solid rgba(255,255,255,0.05);
+      transition: all 0.3s ease;
+      font-size: 0.95rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .navbar-list li a::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+      transition: left 0.5s;
+    }
+
+    .navbar-list li a:hover::before {
+      left: 100%;
+    }
+
+    .navbar-list li a:hover, .navbar-list li a:focus {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 18px rgba(255,90,46,0.2);
+      background: linear-gradient(180deg, rgba(255,90,46,0.25), rgba(255,90,46,0.15));
+    }
+
+    /* PAGE HEADING */
+    h1 {
+      text-align: center;
+      margin: 30px 0 40px;
+      color: var(--text-primary);
+      font-size: 2.8rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      text-shadow: 0 6px 24px rgba(0,0,0,0.6);
+      position: relative;
+    }
+
+    h1::after {
+      content: '';
+      display: block;
+      width: 100px;
+      height: 4px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      margin: 15px auto 0;
+      border-radius: 2px;
+    }
+
+    /* SUGGESTIONS SECTION */
+    .suggestions-section {
+      background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      border-radius: 20px;
+      padding: 30px;
+      margin-bottom: 30px;
+      border: 1px solid rgba(255,255,255,0.05);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+    }
+
+    .suggestions-section h2 {
+      color: var(--accent-2);
+      margin-bottom: 25px;
+      text-align: center;
+      font-size: 1.8rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    /* DESKTOP LAYOUT: Three columns side by side */
+    .suggestions-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 25px;
+      margin: 0 auto 40px;
+    }
+
+    /* Individual window styling */
+    .suggestion-window {
+      background: var(--card-bg);
+      border-radius: 18px;
+      padding: 25px;
+      border: 1px solid var(--muted);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      transition: all 0.4s ease;
+      min-height: 380px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .suggestion-window::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    }
+
+    .suggestion-window:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+      background: var(--card-hover);
+    }
+
+    /* Window headers */
+    .suggestion-window h2 {
+      color: var(--accent);
+      font-size: 1.5rem;
+      text-align: center;
+      margin-bottom: 25px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    /* Window content areas */
+    .window-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      align-items: center;
+      justify-content: flex-start;
+      overflow-y: auto;
+      max-height: 450px;
+      padding: 5px;
+    }
+
+    /* Custom scrollbar */
+    .window-content::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .window-content::-webkit-scrollbar-track {
+      background: rgba(255,255,255,0.05);
+      border-radius: 10px;
+    }
+
+    .window-content::-webkit-scrollbar-thumb {
+      background: var(--accent);
+      border-radius: 10px;
+    }
+
+    /* SUGGESTION CARDS */
+    .suggestion-card {
+      background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+      border-radius: 16px;
+      padding: 22px;
+      width: 100%;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+      transition: all 0.4s ease;
+      border: 1px solid rgba(255,255,255,0.06);
+      position: relative;
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+    }
+
+    .suggestion-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      border-color: rgba(255,90,46,0.3);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+    }
+
+    .suggestion-card h3 { 
+      color: var(--accent); 
+      margin-bottom: 12px; 
+      font-size: 1.3rem; 
+      font-weight: 700;
+    }
+    
+    .suggestion-card p { 
+      color: var(--text-secondary); 
+      margin: 8px 0; 
+      font-size: 1rem; 
+      line-height: 1.5;
+    }
+    
+    .suggestion-card .price { 
+      font-weight: 800; 
+      color: #9fe3c0; 
+      margin: 15px 0; 
+      font-size: 1.3rem; 
+      text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    }
+
+    .suggestion-card button {
+      background: linear-gradient(180deg, var(--accent), var(--accent-2));
+      color: #fff;
+      border: none;
+      padding: 14px 20px;
+      border-radius: 12px;
+      width: 100%;
+      cursor: pointer;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      transition: all 0.3s ease;
+      font-size: 1.05rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .suggestion-card button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .suggestion-card button:hover::before {
+      left: 100%;
+    }
+
+    .suggestion-card button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(255,90,46,0.3);
+    }
+
+    /* CUSTOMIZER SECTION */
+    .customizer-section {
+      background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+      padding: 30px;
+      border: 1px solid rgba(255,255,255,0.05);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      margin-bottom: 30px;
+    }
+
+    .customizer-section h2 {
+      color: var(--accent-2);
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 1.8rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .customizer {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 25px;
+    }
+
+    .preview {
+      text-align: center;
+      background: var(--card-bg);
+      border-radius: 18px;
+      padding: 25px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      border: 1px solid rgba(255,255,255,0.05);
+      position: sticky;
+      top: 30px;
+    }
+
+    .option-group { 
+      margin-bottom: 25px; 
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,0.05);
+      transition: all 0.3s ease;
+    }
+
+    .option-group:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+    }
+    
+    .option-group h3 {
+      background: linear-gradient(180deg, var(--accent), var(--accent-2));
+      color: #fff;
+      font-weight: 800;
+      text-align: center;
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 1.2rem;
+      margin-bottom: 18px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    }
+
+    label { 
+      display: block; 
+      color: var(--text-secondary); 
+      font-weight: 700; 
+      margin-bottom: 10px; 
+      font-size: 1rem; 
+    }
+
+    select {
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(10,10,10,0.6);
+      color: var(--text-primary);
+      font-size: 1rem;
+      outline: none;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    select:focus { 
+      box-shadow: 0 0 0 3px rgba(255,90,46,0.3); 
+      border-color: var(--accent);
+    }
+
+    .toppings-list, .sauce-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .toppings-list label, .sauce-options label {
+      font-weight: 600;
+      background: rgba(255,255,255,0.03);
+      border-radius: 50px;
+      padding: 12px 18px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid rgba(255,255,255,0.05);
+      font-size: 0.95rem;
+    }
+
+    .toppings-list label:hover, .sauce-options label:hover { 
+      transform: translateY(-3px); 
+      background: rgba(255,90,46,0.1); 
+      border-color: rgba(255,90,46,0.3);
+    }
+
+    .toppings-list input[type="checkbox"], .sauce-options input[type="checkbox"] { 
+      transform: scale(1.2); 
+      accent-color: var(--accent); 
+    }
+
+    /* PIZZA IMAGE (preview) */
+    .pizza-image {
+      width: 280px;
+      height: 280px;
+      margin: 20px auto;
+      border-radius: 50%;
+      background: url('https://cdn-icons-png.flaticon.com/512/3595/3595455.png') center/cover no-repeat;
+      display: inline-block;
+      position: relative;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.6), inset 0 4px 10px rgba(255,255,255,0.05);
+      border: 8px solid rgba(255,90,46,0.2);
+      transition: all 0.5s ease;
+    }
+
+    .pizza-image:hover {
+      transform: rotate(5deg) scale(1.05);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.7), inset 0 4px 10px rgba(255,255,255,0.1);
+    }
+
+    .price-display {
+      text-align: center;
+      font-size: 1.8rem;
+      font-weight: 900;
+      margin-top: 20px;
+      color: #081f16;
+      background: linear-gradient(135deg, #ffd54f, #ffca28);
+      padding: 15px 25px;
+      border-radius: 16px;
+      display: inline-block;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      min-width: 200px;
+      transition: all 0.3s ease;
+    }
+
+    .price-display:hover {
+      transform: scale(1.05);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.6);
+    }
+
+    .confirm-btn {
+      display: block;
+      margin: 30px auto;
+      padding: 18px 40px;
+      background: linear-gradient(180deg, var(--accent), var(--accent-2));
+      color: #fff;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      font-size: 1.2rem;
+      font-weight: 900;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+      transition: all 0.4s ease;
+      letter-spacing: 0.5px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .confirm-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .confirm-btn:hover::before {
+      left: 100%;
+    }
+
+    .confirm-btn:hover { 
+      transform: translateY(-5px) scale(1.05); 
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6); 
+    }
+    
+    .confirm-btn:active { 
+      transform: translateY(0) scale(1); 
+    }
+
+    /* small "NEW" tag positioning */
+    .new-tag {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 800;
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      box-shadow: 0 6px 15px rgba(255,90,46,0.3);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    .card-container { 
+      position: relative; 
+    }
+
+    /* rotating card fade */
+    .rotating-card { 
+      opacity: 1; 
+      transition: opacity 0.5s ease; 
+    }
+
+    /* HIDES/UTILITY */
+    .hidden { 
+      display: none !important; 
+    }
+
+    /***** RESPONSIVE RULES *****/
+    /* Large Desktop */
+    @media (max-width: 1400px) {
+      .container {
+        max-width: 1200px;
+      }
+    }
+
+    /* Laptop */
+    @media (max-width: 1200px) {
+      .suggestions-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 25px;
+      }
+      
+      .suggestion-window.new-arrivals {
+        grid-column: span 2;
+      }
+      
+      .customizer {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+      
+      .preview {
+        order: -1;
+        position: static;
+      }
+    }
+
+    /* Tablet */
+    @media (max-width: 900px) {
+      .container {
+        padding: 15px;
+      }
+      
+      h1 {
+        font-size: 2.2rem;
+      }
+      
+      .suggestions-grid {
+        grid-template-columns: 1fr;
+        gap: 25px;
+      }
+      
+      .suggestion-window.new-arrivals {
+        grid-column: span 1;
+      }
+      
+      .options {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      
+      .toppings-list, .sauce-options {
+        grid-template-columns: 1fr;
+      }
+      
+      .suggestion-window {
+        min-height: 320px;
+        padding: 20px;
+      }
+      
+      .pizza-image {
+        width: 220px;
+        height: 220px;
+      }
+    }
+
+    /* Mobile */
+    @media (max-width: 600px) {
+      .container {
+        padding: 10px;
+        margin: 10px auto;
+      }
+      
+      h1 {
+        font-size: 1.8rem;
+        margin: 20px 0 30px;
+      }
+      
+      .suggestions-section, .customizer-section {
+        padding: 20px;
+        border-radius: 16px;
+      }
+      
+      .suggestion-window {
+        min-height: 280px;
+        padding: 18px;
+      }
+      
+      .suggestion-window h2 {
+        font-size: 1.3rem;
+      }
+      
+      .suggestion-card {
+        padding: 18px;
+      }
+      
+      .navbar-list {
+        gap: 8px;
+      }
+      
+      .navbar-list li a {
+        padding: 10px 16px;
+        font-size: 0.9rem;
+      }
+      
+      .pizza-image {
+        width: 180px;
+        height: 180px;
+      }
+      
+      .price-display {
+        font-size: 1.4rem;
+        padding: 12px 20px;
+        min-width: 160px;
+      }
+      
+      .confirm-btn {
+        width: 90%;
+        padding: 16px;
+        font-size: 1.1rem;
+      }
+      
+      .option-group h3 {
+        font-size: 1.1rem;
+        padding: 10px;
+      }
+      
+      select {
+        padding: 12px;
+      }
+    }
+
+    /* Small Mobile */
+    @media (max-width: 400px) {
+      h1 {
+        font-size: 1.6rem;
+      }
+      
+      .suggestions-section h2, .customizer-section h2 {
+        font-size: 1.4rem;
+      }
+      
+      .suggestion-window h2 {
+        font-size: 1.2rem;
+      }
+      
+      .suggestion-card h3 {
+        font-size: 1.1rem;
+      }
+      
+      .pizza-image {
+        width: 160px;
+        height: 160px;
+      }
+    }
+
+    /* Ensure content is properly centered when empty */
+    .window-content:empty::before {
+      content: "No items to display";
+      color: rgba(255,255,255,0.4);
+      font-style: italic;
+      text-align: center;
+      margin: auto;
+      font-size: 1.1rem;
+    }
+
+    /* Smooth scrolling for mobile */
+    .window-content {
+      -overflow-scrolling: touch;
+    }
+
+    /* Focus styles for accessibility */
+    a:focus, button:focus, select:focus, input:focus { 
+      outline: 3px solid rgba(255,90,46,0.5); 
+      outline-offset: 2px; 
+    }
+
+    .new-arrivals-button {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(255,90,46,0.3);
+    }
+
+    .new-arrivals-button:hover {
+      background: var(--accent-2);
+      box-shadow: 0 6px 16px rgba(255,90,46,0.4);
+    }
+
+    .new-arrivals-button:active {
+      transform: scale(0.95);
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <nav class="navbar">
+      <ul class="navbar-list">
+        <li><a href="Home.html" class="link">HOME</a></li>
+        <li><a href="About.html" class="link">ABOUT</a></li>
+        <li><a href="Menue.html" class="link">MENU</a></li>
+        <li><a href="custom.html" class="link">CUSTOMIZE</a></li>
+        <li><a href="blog.html" class="link">BLOG</a></li>
+        <li><a href="profile.html" class="link">PROFILE</a></li>
+        <li><a href="sign-up.html" class="link">SIGN UP</a></li>
+        <li><a href="Contact-us.html" class="link">CONTACT US</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="container">
+    <h1>🍕 Customize Your Perfect Pizza</h1>
+
+    <!-- Suggestions Section -->
+    <div class="suggestions-section" id="suggestionsSection">
+      <h2><i class="fas fa-lightbulb"></i> Personalized Suggestions For You</h2>
+
+      <!-- Desktop: Three columns, Mobile: Stacked -->
+      <div class="suggestions-grid">
+        <!-- History Window -->
+        <div class="suggestion-window history">
+          <h2><i class="fas fa-history"></i> Your History</h2>
+          <div class="window-content" id="historyWindow"></div>
+        </div>
+
+        <!-- Suggested For You Window -->
+        <div class="suggestion-window suggested">
+          <h2><i class="fas fa-sync-alt"></i> Suggested For You</h2>
+          <div class="window-content" id="rotatingWindow"></div>
+        </div>
+
+        <!-- New Arrivals Window -->
+        <div class="suggestion-window new-arrivals">
+          <h2><i class="fas fa-star"></i> New Arrivals</h2>
+          <div class="window-content" id="newMenuWindow"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Customizer Section -->
+    <div class="customizer-section">
+      <h2><i class="fas fa-utensils"></i> Build Your Pizza</h2>
+      
+      <div class="customizer">
+        <div class="options">
+          <div class="option-group">
+            <h3>Choose Size</h3>
+            <select id="size" title="choose size">
+              <option value="None">Select Size</option>
+              <option value="Small" data-price="129">Small - Rs.129</option>
+              <option value="Medium" data-price="279">Medium - Rs.279</option>
+              <option value="Large" data-price="700">Large - Rs.700</option>
+              <option value="Extra Large" data-price="779">Extra Large - Rs.779</option>
+            </select>
+          </div>
+
+          <div class="option-group">
+            <h3>Choose Crust</h3>
+            <select id="crust" title="choose crust"></select>
+          </div>
+
+          <div class="option-group">
+            <h3>Choose Sauce</h3>
+            <div class="sauce-options">
+              <label><input type="checkbox" class="sauce-option" value="Tomato" data-price="99"> Tomato - Rs.99</label>
+              <label><input type="checkbox" class="sauce-option" value="Barbeque" data-price="149"> Barbeque - Rs.149</label>
+              <label><input type="checkbox" class="sauce-option" value="Pesto" data-price="169"> Pesto - Rs.169</label>
+              <label><input type="checkbox" class="sauce-option" value="Chipotle" data-price="189"> Chipotle - Rs.189</label>
+            </div>
+          </div>
+
+          <div class="option-group">
+            <h3>Choose Toppings</h3>
+            <div class="toppings-list">
+              <label><input type="checkbox" value="Pepperoni" data-price="75"> Pepperoni</label>
+              <label><input type="checkbox" value="Mushrooms" data-price="50"> Mushrooms</label>
+              <label><input type="checkbox" value="Onions" data-price="25"> Onions</label>
+              <label><input type="checkbox" value="Olives" data-price="35"> Olives</label>
+              <label><input type="checkbox" value="Chicken" data-price="59"> Chicken</label>
+              <label><input type="checkbox" value="Extra Cheese" data-price="90"> Extra Cheese</label>
+              <label><input type="checkbox" value="Jalapeno" data-price="30"> Jalapeno</label>
+              <label><input type="checkbox" value="Capcicum" data-price="40"> Capcicum</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="preview">
+          <h3>Your Pizza Preview</h3>
+          <div class="pizza-image" id="pizzaImage"></div>
+          <div class="price-display" id="totalPrice">Total: Rs.0</div>
+          <button class="new-arrivals-button" id="saveToProfileBtn" style="margin-top: 15px; width: 100%;">
+            <i class="fas fa-save"></i> Save to Profile
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <button id="confirmBtn" class="confirm-btn">Confirm My Pizza</button>
+  </div>
+
+  <script>
+    // 🌟 Smooth scroll with easing like branded websites
+    function smoothScrollTo(target, duration = 400) {
+      const start = window.scrollY;
+      const end = target.getBoundingClientRect().top + window.scrollY;
+      const distance = end - start;
+      const startTime = performance.now();
+
+      function easeInOutQuad(t) {
+        return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
+      }
+
+      function animate(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const ease = easeInOutQuad(progress);
+        window.scrollTo(0, start + distance * ease);
+        if (elapsed < duration) requestAnimationFrame(animate);
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    // Data for crust options based on size
+    const crusts = {
+      None: [
+        ["Regular", 0], 
+        ["Thin Crust", 0], 
+        ["Cheese Burst", 0], 
+        ["Kabab Crust", 0] 
+      ],
+      Small: [
+        ["Regular", 89],
+        ["Thin Crust", 119],
+        ["Cheese Burst", 149],
+        ["Kabab Crust", 179]
+      ],
+      Medium: [
+        ["Regular", 189],
+        ["Thin Crust", 239],
+        ["Cheese Burst", 279],
+        ["Kabab Crust", 309]
+      ],
+      Large: [
+        ["Regular", 289],
+        ["Thin Crust", 349],
+        ["Cheese Burst", 399],
+        ["Kabab Crust", 459]
+      ],
+      "Extra Large": [
+        ["Regular", 359],
+        ["Thin Crust", 419],
+        ["Cheese Burst", 499],
+        ["Kabab Crust", 559]
+      ]
+    };
+
+    // Enhanced popular pizzas with more variety for rotation
+    const popularPizzas = [
+      {
+        id: "p1",
+        name: "Pepperoni Feast",
+        size: "Medium",
+        crust: "Regular",
+        sauce: ["Tomato"],
+        toppings: ["Pepperoni", "Extra Cheese"],
+        description: "Classic pepperoni with extra cheese",
+        emoji: "🍕",
+        likes: 22,
+        views: 130,
+        comments: [],
+        savedBy: []
+      },
+      {
+        id: "p2",
+        name: "Veggie Supreme",
+        size: "Large",
+        crust: "Thin Crust",
+        sauce: ["Tomato"],
+        toppings: ["Mushrooms", "Onions", "Olives", "Capcicum"],
+        description: "Loaded with fresh vegetables",
+        emoji: "🥦",
+        likes: 38,
+        views: 280,
+        comments: [],
+        savedBy: []
+      },
+      {
+        id: "p3",
+        name: "Spicy Chicken",
+        size: "Medium",
+        crust: "Kabab Crust",
+        sauce: ["Barbeque"],
+        toppings: ["Chicken", "Jalapeno", "Onions"],
+        description: "For those who love some heat",
+        emoji: "🔥",
+        likes: 9,
+        views: 64,
+        comments: [],
+        savedBy: []
+      }
+    ];
+
+    // Database for new menu items
+    const newMenuItems = [
+      {
+        id: "n1",
+        name: "Truffle Mushroom Delight",
+        size: "Medium",
+        crust: "Thin Crust",
+        sauce: ["Pesto"],
+        toppings: ["Mushrooms", "Extra Cheese"],
+        description: "Gourmet truffle-infused mushrooms",
+        isNew: true,
+        emoji: "🍄",
+        likes: 15,
+        views: 89,
+        comments: [],
+        savedBy: []
+      }
+    ];
+
+    // User Profile Data
+    let userProfile = {
+      username: "Pizza Lover",
+      bio: "Pizza enthusiast creating delicious combinations",
+      followers: 24,
+      following: false,
+      pizzas: [],
+      savedPizzas: [],
+      badges: []
+    };
+
+    // DOM Elements
+    const sizeEl = document.getElementById('size');
+    const crustEl = document.getElementById('crust');
+    const sauceOptions = document.querySelectorAll('.sauce-option');
+    const toppings = document.querySelectorAll('input[type=checkbox]');
+    const totalPrice = document.getElementById('totalPrice');
+    const confirmBtn = document.getElementById('confirmBtn');
+    const suggestionsSection = document.getElementById('suggestionsSection');
+    const pizzaImage = document.getElementById('pizzaImage');
+    const saveToProfileBtn = document.getElementById('saveToProfileBtn');
+
+    // DOM Elements for three windows
+    const historyWindow = document.getElementById('historyWindow');
+    const rotatingWindow = document.getElementById('rotatingWindow');
+    const newMenuWindow = document.getElementById('newMenuWindow');
+
+    // Variables for rotating suggestions
+    let currentRotationIndex = 0;
+    let rotationInterval;
+
+    // Initialize the page
+    function init() {
+      loadUserProfile();
+      setCrustOptions(sizeEl.value);
+      calculatePrice();
+      generateSuggestions();
+      
+      // Apply saved config if present
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.has('applyConfig')) {
+        const savedConfig = loadPizzaConfig();
+        if (savedConfig) applyPizzaConfig(savedConfig);
+      }
+    }
+
+    // Load user profile from localStorage
+    function loadUserProfile() {
+      const savedProfile = localStorage.getItem('userProfile');
+      if (savedProfile) {
+        userProfile = JSON.parse(savedProfile);
+      }
+    }
+
+    // Save user profile to localStorage
+    function saveUserProfile() {
+      localStorage.setItem('userProfile', JSON.stringify(userProfile));
+    }
+
+    // Save current pizza to profile
+    function savePizzaToProfile() {
+      const pizzaConfig = calculatePrice();
+      
+      if (pizzaConfig.size === "None") {
+        alert("Please select a pizza size first!");
+        return;
+      }
+      
+      const pizzaName = prompt("Give your pizza a name:", `My ${pizzaConfig.size} Pizza`);
+      if (!pizzaName) return;
+      
+      const newPizza = {
+        id: 'p' + Date.now(),
+        name: pizzaName,
+        size: pizzaConfig.size,
+        crust: pizzaConfig.crust,
+        sauce: pizzaConfig.sauce,
+        toppings: pizzaConfig.toppings,
+        description: `Custom ${pizzaConfig.size} pizza with ${pizzaConfig.crust} crust`,
+        emoji: "🍕",
+        likes: 0,
+        views: 0,
+        comments: [],
+        savedBy: [],
+        createdAt: new Date().toISOString(),
+        price: pizzaConfig.total
+      };
+      
+      userProfile.pizzas.unshift(newPizza);
+      saveUserProfile();
+      
+      alert(`"${pizzaName}" has been saved to your profile!`);
+    }
+
+    // Initialize crust options based on selected size
+    function setCrustOptions(size) {
+      crustEl.innerHTML = '';
+      (crusts[size] || crusts.Small).forEach(([val, price]) => {
+        const opt = document.createElement('option');
+        opt.value = val;
+        opt.textContent = `${val} - Rs.${price}`;
+        opt.dataset.price = price;
+        crustEl.appendChild(opt);
+      });
+      calculatePrice();
+    }
+
+    // Calculate total price
+    function calculatePrice() {
+      let total = 0;
+
+      // Size price
+      total += parseInt(sizeEl.selectedOptions[0].dataset.price || 0);
+
+      // Crust price
+      total += parseInt(crustEl.selectedOptions[0].dataset.price || 0);
+
+      // Sauces
+      sauceOptions.forEach(cb => {
+        if (cb.checked) {
+          total += parseInt(cb.dataset.price || 0);
+        }
+      });
+
+      // Toppings
+      const toppingCheckboxes = Array.from(document.querySelectorAll('input[type=checkbox]'))
+        .filter(cb => !cb.classList.contains('sauce-option'));
+        
+      toppingCheckboxes.forEach(t => {
+        if (t.checked) {
+          total += parseInt(t.dataset.price || 0);
+        }
+      });
+
+      totalPrice.textContent = `Total: Rs.${total}`;
+      
+      // Update pizza image based on toppings
+      const hasExtraCheese = Array.from(toppingCheckboxes).some(t => t.checked && t.value === "Extra Cheese");
+      
+      if (hasExtraCheese) {
+        pizzaImage.style.filter = "brightness(1.2)";
+        pizzaImage.style.boxShadow = "0 0 25px gold, 0 15px 35px rgba(0,0,0,0.6)";
+      } else {
+        pizzaImage.style.filter = "brightness(1)";
+        pizzaImage.style.boxShadow = "0 15px 35px rgba(0,0,0,0.6), inset 0 4px 10px rgba(255,255,255,0.05)";
+      }
+
+      return {
+        size: sizeEl.value,
+        crust: crustEl.value,
+        sauce: Array.from(sauceOptions).filter(cb => cb.checked).map(cb => cb.value),
+        toppings: Array.from(toppingCheckboxes).filter(t => t.checked).map(t => t.value),
+        total: total
+      };
+    }
+
+    // Save pizza configuration to localStorage
+    function savePizzaConfig(pizza) {
+      localStorage.setItem('lastPizzaConfig', JSON.stringify(pizza));
+      
+      // Also save to history (keep last 3)
+      let pizzaHistory = JSON.parse(localStorage.getItem('pizzaHistory') || '[]');
+      pizzaHistory.unshift({
+        ...pizza,
+        timestamp: new Date().toISOString()
+      });
+      
+      // Keep only last 3 orders
+      if (pizzaHistory.length > 3) {
+        pizzaHistory = pizzaHistory.slice(0, 3);
+      }
+      
+      localStorage.setItem('pizzaHistory', JSON.stringify(pizzaHistory));
+    }
+
+    // Load pizza configuration from localStorage
+    function loadPizzaConfig() {
+      const savedConfig = localStorage.getItem('lastPizzaConfig');
+      if (savedConfig) {
+        return JSON.parse(savedConfig);
+      }
+      return null;
+    }
+
+    // Apply a pizza configuration to the form
+    function applyPizzaConfig(config) {
+      // Set size
+      sizeEl.value = config.size;
+      setCrustOptions(config.size);
+      
+      // Wait for crust options to update
+      setTimeout(() => {
+        // Set crust
+        crustEl.value = config.crust;
+        
+        // Set sauces
+        sauceOptions.forEach(cb => {
+          cb.checked = config.sauce.includes(cb.value);
+        });
+        
+        // Set toppings
+        const toppingCheckboxes = Array.from(document.querySelectorAll('input[type=checkbox]'))
+          .filter(cb => !cb.classList.contains('sauce-option'));
+          
+        toppingCheckboxes.forEach(t => {
+          t.checked = config.toppings.includes(t.value);
+        });
+        
+        // Recalculate price
+        calculatePrice();
+      }, 100);
+    }
+
+    // Calculate price for a pizza configuration
+    function calculatePizzaPrice(pizza) {
+      let total = 0;
+      
+      // Size price
+      const sizeOption = Array.from(sizeEl.options).find(opt => opt.value === pizza.size);
+      if (sizeOption) total += parseInt(sizeOption.dataset.price || 0);
+      
+      // Crust price
+      const crustData = crusts[pizza.size] || crusts.Medium;
+      const crustOption = crustData.find(c => c[0] === pizza.crust);
+      if (crustOption) total += crustOption[1];
+      
+      // Sauce prices
+      pizza.sauce.forEach(sauce => {
+        const sauceOption = Array.from(sauceOptions).find(opt => opt.value === sauce);
+        if (sauceOption) total += parseInt(sauceOption.dataset.price || 0);
+      });
+      
+      // Topping prices
+      pizza.toppings.forEach(topping => {
+        const toppingOption = Array.from(toppings).find(opt => opt.value === topping);
+        if (toppingOption) total += parseInt(toppingOption.dataset.price || 0);
+      });
+      
+      return total;
+    }
+
+    // Function to populate history window
+    function populateHistoryWindow() {
+      const lastConfig = loadPizzaConfig();
+      historyWindow.innerHTML = '';
+
+      if (lastConfig) {
+        const historyCard = document.createElement('div');
+        historyCard.className = 'suggestion-card';
+        historyCard.innerHTML = `
+          <h3><i class="fas fa-history"></i> Your Last Order</h3>
+          <p><strong>Size:</strong> ${lastConfig.size}</p>
+          <p><strong>Crust:</strong> ${lastConfig.crust}</p>
+          <p><strong>Toppings:</strong> ${lastConfig.toppings.join(', ') || 'None'}</p>
+          <p><strong>Sauces:</strong> ${lastConfig.sauce.join(', ') || 'None'}</p>
+          <div class="price">Rs.${lastConfig.total}</div> 
+        `;
+        //smooth scrolling
+        const button = document.createElement('button');
+        button.className = "new-arrivals-button";
+        button.textContent = "Order Again";
+        button.addEventListener("click", () => {
+        applyPizzaConfig(lastConfig);
+        setTimeout(() => {
+        const section = document.querySelector(".customizer-section");
+        if (section) {
+          smoothScrollTo(section, 400); 
+          }
+        }, 200); 
+      });
+        historyCard.appendChild(button);
+        historyWindow.appendChild(historyCard);
+      } else {
+        historyWindow.innerHTML = '<p>No order history yet. Place your first order!</p>';
+      }
+    }
+
+    // Function to populate rotating suggestions window
+    function populateRotatingWindow() {
+      rotatingWindow.innerHTML = '';
+      
+      // Show current rotating card
+      const currentPizza = popularPizzas[currentRotationIndex];
+      const price = calculatePizzaPrice(currentPizza);
+      
+      const rotatingCard = document.createElement('div');
+      rotatingCard.className = 'suggestion-card rotating-card';
+      rotatingCard.innerHTML = `
+        <h3>${currentPizza.name}</h3>
+        <p>${currentPizza.description}</p>
+        <p><strong>Size:</strong> ${currentPizza.size}</p>
+        <p><strong>Crust:</strong> ${currentPizza.crust}</p>
+        <p><strong>Toppings:</strong> ${currentPizza.toppings.join(', ')}</p>
+        <div class="price">Rs.${price}</div>
+      `;
+      const button = document.createElement('button');
+        button.className = "new-arrivals-button";
+        button.textContent = "Try This Pizza";
+        button.addEventListener("click", () => {
+        applyPizzaConfig(currentPizza);
+        setTimeout(() => {
+        const section = document.querySelector(".customizer-section");
+        if (section) {
+          smoothScrollTo(section, 400); 
+          }
+        }, 200); 
+      });
+      rotatingCard.appendChild(button);
+      rotatingWindow.appendChild(rotatingCard);
+    }
+
+    // Function to rotate suggestions every 5 seconds
+    function startRotation() {
+      rotationInterval = setInterval(() => {
+        currentRotationIndex = (currentRotationIndex + 1) % popularPizzas.length;
+        populateRotatingWindow();
+      }, 5000); // Change every 5 seconds
+    }
+
+    // Function to populate new menu window
+    function populateNewMenuWindow() {
+      newMenuWindow.innerHTML = '';
+      
+      if (newMenuItems.length === 0) {
+        newMenuWindow.innerHTML = '<p>No new menu items at the moment.</p>';
+        return;
+      }
+      
+      newMenuItems.forEach(pizza => {
+        const price = calculatePizzaPrice(pizza);
+        
+        const newCard = document.createElement('div');
+        newCard.className = 'suggestion-card card-container';
+        let newTag = '';
+        if (pizza.isNew) {
+          newTag = '<span class="new-tag">NEW</span>';
+        }
+        newCard.innerHTML = `
+          ${newTag}
+          <h3>${pizza.name}</h3>
+          <p>${pizza.description}</p>
+          <p><strong>Size:</strong> ${pizza.size}</p>
+          <p><strong>Crust:</strong> ${pizza.crust}</p>
+          <p><strong>Toppings:</strong> ${pizza.toppings.join(', ')}</p>
+          <div class="price">Rs.${price}</div>
+        `;
+        const button = document.createElement('button');
+        button.className = "new-arrivals-button";
+        button.textContent = "New Arrivals";
+        button.addEventListener("click", () => {
+        applyPizzaConfig(pizza);
+        setTimeout(() => {
+        const section = document.querySelector(".customizer-section");
+        if (section) {
+          smoothScrollTo(section, 400); 
+          }
+        }, 200); 
+      });
+      newCard.appendChild(button);
+        newMenuWindow.appendChild(newCard);
+      });
+    }
+
+    // Enhanced generateSuggestions function to use three windows
+    function generateSuggestions() {
+      // Populate the three windows
+      populateHistoryWindow();
+      populateRotatingWindow();
+      populateNewMenuWindow();
+      
+      // Start the rotation
+      startRotation();
+    }
+
+    // Event Listeners
+    document.querySelector('.customizer').addEventListener('change', (e) => {
+      const sizeEl = document.getElementById('size');
+
+      // If size dropdown changed
+      if (e.target === sizeEl) {
+        const selectedSize = sizeEl.value;
+        setCrustOptions(selectedSize);
+
+        // Define multipliers
+        const sizeMultiplier = {
+          Small: 1,
+          Medium: 1.2,
+          Large: 1.4,
+          "Extra Large": 1.6
+        };
+        const multiplier = sizeMultiplier[selectedSize] || 1;
+
+        // Update sauce & topping prices dynamically
+        document.querySelectorAll('.sauce-option, .toppings-list input[type="checkbox"]').forEach(cb => {
+          // Ensure every checkbox has a base price stored
+          let basePrice = parseInt(cb.getAttribute('data-base'));
+          if (isNaN(basePrice)) {
+            basePrice = parseInt(cb.dataset.price) || 0;
+            cb.setAttribute('data-base', basePrice);
+          }
+
+          // Recalculate new price
+          const newPrice = Math.round(basePrice * multiplier);
+          cb.dataset.price = newPrice;
+
+          // Update the label text (without recreating input)
+          const label = cb.parentElement;
+          const newText = `${cb.value} - Rs.${newPrice}`;
+          label.childNodes.forEach(node => {
+            if (node.nodeType === Node.TEXT_NODE) label.removeChild(node);
+          });
+          label.appendChild(document.createTextNode(' ' + newText));
+        });
+
+        // Recalculate after size change
+        calculatePrice();
+      }
+
+      // Handle checkbox (sauce/topping) and crust changes
+      if (e.target.matches('input[type="checkbox"], #crust')) {
+        calculatePrice();
+      }
+    });
+
+    // Save to profile button
+    saveToProfileBtn.addEventListener('click', savePizzaToProfile);
+
+    // Confirm button
+    confirmBtn.addEventListener('click', () => {
+      const pizza = calculatePrice();
+      savePizzaConfig(pizza);
+
+      alert(
+        `Your Custom Pizza:\n\nSize: ${pizza.size}\nCrust: ${pizza.crust}\nSauce: ${pizza.sauce.join(', ')}\nToppings: ${pizza.toppings.join(', ')}\nTotal: Rs.${pizza.total}\n\nThank you for your order!`
+      );
+
+      generateSuggestions();
+    });
+
+    // Initialize once on page load
+    window.addEventListener('DOMContentLoaded', init);
+
+    // Make functions available globally for onclick handlers
+    window.applyPizzaConfig = applyPizzaConfig;
+  </script>
+</body>
+</html>

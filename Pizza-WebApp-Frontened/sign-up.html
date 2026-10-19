@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BENZO - Sign Up</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="sign-up.css">
+    <link rel="stylesheet" href="auth-shared.css">
+</head>
+<body>
+    <!-- HEADER -->
+    <!-- HEADER -->
+    <header class="header" id="header">
+        <nav class="navbar">
+            <div class="navbar-left">
+                <button class="menu-btn" id="menuBtn" aria-label="Open menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <a href="Home.html" class="logo">
+                    <i class="fas fa-pizza-slice"></i> BENZO
+                </a>
+            </div>
+            <div class="navbar-right">
+                <!-- ─── LOGGED OUT ─── -->
+                <div id="authGroupLoggedOut" style="display:flex; gap:15px; align-items:center;">
+                    <a href="login.html" class="signup-btn" id="loginNavBtn">
+                        <i class="fas fa-right-to-bracket"></i> Login
+                    </a>
+                    <a href="sign-up.html" class="signup-btn" id="signupNavBtn">
+                        <i class="fas fa-user-plus"></i> Sign Up
+                    </a>
+                </div>
+                <!-- ─── LOGGED IN ─── -->
+                <div id="authGroupLoggedIn" style="display:none; gap:15px; align-items:center;">
+                    <a href="dashboard.html" class="signup-btn" id="dashboardNavBtn" style="background: linear-gradient(180deg, #28a745, #218838);">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </a>
+                    <button class="signup-btn" id="logoutNavBtn" style="background: #dc3545; border:none; padding:12px 20px; border-radius:10px; font-weight:600; cursor:pointer; color:white;">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </header>
+    
+    <!-- SIDEBAR - WITH DASHBOARD LINK REMOVED -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h3 class="sidebar-title">Menu</h3>
+            <button class="close-btn" id="closeBtn" aria-label="Close menu">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <ul class="sidebar-nav">
+            <!-- ─── REGULAR PAGES ─── -->
+            <li><a href="Home.html"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="About.html" class="active"><i class="fas fa-info-circle"></i> About</a></li>
+            <li><a href="Menue.html"><i class="fas fa-utensils"></i> Menu</a></li>
+            <li><a href="custom.html"><i class="fas fa-sliders-h"></i> Customize</a></li>
+            <li><a href="blog.html"><i class="fas fa-blog"></i> Blog</a></li>
+            <li><a href="Contact-us.html"><i class="fas fa-address-book"></i> Contact Us</a></li>
+            <li><a href="order-history.html"><i class="fas fa-clipboard-list"></i> Orders</a></li>
+            
+            <!-- ✅ REMOVED: <li><a href="dashboard.html">Dashboard</a></li> -->
+            <!-- JavaScript adds Dashboard/Logout dynamically -->
+        </ul>
+    </div>
+    
+    <!-- OVERLAY -->
+    <div class="overlay" id="overlay"></div>
+
+
+    <div class="auth-wrapper">
+        <div class="auth-card">
+            <!-- STEP 1: SIGNUP -->
+            <div class="auth-step" id="stepSignup">
+                <h1 class="auth-title"><i class="fas fa-pizza-slice"></i> Create Account</h1>
+                <p class="auth-subtitle">Join to customize pizzas, earn XP, and track your orders.</p>
+
+                <form id="signupForm" novalidate>
+                    <div class="form-group">
+                        <label for="signupName">Full Name</label>
+                        <input type="text" id="signupName" placeholder="Your name" required>
+                        <span class="field-error" id="signupNameError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="signupEmail">Email Address</label>
+                        <input type="email" id="signupEmail" placeholder="you@example.com" required>
+                        <span class="field-error" id="signupEmailError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="signupPhone">Phone Number <span class="optional-tag">(optional — for WhatsApp/SMS verification)</span></label>
+                        <input type="tel" id="signupPhone" placeholder="+92 3XX XXXXXXX">
+                        <span class="field-error" id="signupPhoneError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="signupPassword">Password</label>
+                        <div class="password-wrap">
+                            <input type="password" id="signupPassword" placeholder="Create a password" required>
+                            <button type="button" class="toggle-password" data-target="signupPassword" aria-label="Show password">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <span class="field-error" id="signupPasswordError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="signupConfirmPassword">Confirm Password</label>
+                        <div class="password-wrap">
+                            <input type="password" id="signupConfirmPassword" placeholder="Re-enter your password" required>
+                            <button type="button" class="toggle-password" data-target="signupConfirmPassword" aria-label="Show password">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <span class="field-error" id="signupConfirmPasswordError"></span>
+                    </div>
+
+                    <span class="field-error" id="signupFormError"></span>
+
+                    <button type="submit" class="auth-btn" id="signupSubmitBtn">
+                        <i class="fas fa-user-plus"></i> Create Account
+                    </button>
+                </form>
+
+                <div class="divider"><span>or sign up with</span></div>
+
+                <div class="social-buttons">
+                    <button type="button" class="social-btn google" data-provider="google">
+                        <i class="fab fa-google"></i> Google
+                    </button>
+                    <button type="button" class="social-btn facebook" data-provider="facebook">
+                        <i class="fab fa-facebook-f"></i> Facebook
+                    </button>
+                    <button type="button" class="social-btn twitter" data-provider="twitter">
+                        <i class="fab fa-x-twitter"></i> Twitter
+                    </button>
+                </div>
+
+                <p class="auth-switch">Already have an account? <a href="login.html">Log in</a></p>
+            </div>
+
+            <!-- STEP 2: OTP -->
+            <div class="auth-step" id="stepOtp" style="display:none;">
+                <h1 class="auth-title"><i class="fas fa-shield-halved"></i> Verify Your Account</h1>
+                <p class="auth-subtitle" id="otpSubtitle">We sent a 6-digit code.</p>
+
+                <div class="otp-demo-banner" id="otpDemoBanner">
+                    <i class="fas fa-circle-info"></i>
+                    <span id="otpDemoText"></span>
+                </div>
+
+                <form id="otpForm" novalidate>
+                    <div class="form-group otp-input-group">
+                        <input type="text" maxlength="1" class="otp-digit" data-index="0" inputmode="numeric">
+                        <input type="text" maxlength="1" class="otp-digit" data-index="1" inputmode="numeric">
+                        <input type="text" maxlength="1" class="otp-digit" data-index="2" inputmode="numeric">
+                        <input type="text" maxlength="1" class="otp-digit" data-index="3" inputmode="numeric">
+                        <input type="text" maxlength="1" class="otp-digit" data-index="4" inputmode="numeric">
+                        <input type="text" maxlength="1" class="otp-digit" data-index="5" inputmode="numeric">
+                    </div>
+                    <span class="field-error" id="otpFormError"></span>
+
+                    <button type="submit" class="auth-btn">
+                        <i class="fas fa-check"></i> Verify &amp; Continue
+                    </button>
+                </form>
+
+                <p class="auth-switch">
+                    Didn't get a code? <a href="#" id="resendOtpLink">Resend<span id="resendTimer"></span></a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Pizza Palace</h3>
+                <p>Delivering happiness, one slice at a time. Experience the taste of perfection with our artisanal pizzas made with love and the finest ingredients.</p>
+                <div class="footer-social">
+                    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="Home.html">Home</a></li>
+                    <li><a href="menue.html">Menu</a></li>
+                    <li><a href="custom.html">Customize Pizza</a></li>
+                    <li><a href="About.html">About Us</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="Contact-us.html">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Info</h3>
+                <p><i class="fas fa-map-marker-alt"></i> 123 Pizza Street, Food City, FC 12345</p>
+                <p><i class="fas fa-phone"></i> (123) 456-7890</p>
+                <p><i class="fas fa-envelope"></i> info@pizzapalace.com</p>
+                <p><i class="fas fa-clock"></i> Open Daily: 11:00 AM – 11:00 PM</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Pizza Palace. All rights reserved. | Designed with <i class="fas fa-heart" style="color: #ff5a2e;"></i> for pizza lovers</p>
+        </div>
+    </footer>
+
+    <script src="api.js"></script>
+    <script src="navbar.js"></script>
+    <script src="sign-up.js"></script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+@import url('login.css');
+
+/* Sign-up-specific additions on top of the shared login.css form styles */
+.optional-tag {
+    color: var(--text-secondary);
+    font-weight: 400;
+    font-size: 0.8rem;
+    text-transform: none;
+    letter-spacing: 0;
+}

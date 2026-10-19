@@ -1,0 +1,81 @@
+/* order-system.css - Simple Order System Styling */
+
+/* Cart Notification */
+.cart-notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #28a745;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    z-index: 10000;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+/* Animations */
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+/* Cart link styling */
+.cart-link {
+    background: #28a745 !important;
+    position: relative;
+}
+
+.cart-link:hover {
+    background: #218838 !important;
+}
+
+/* Updated size button for cart */
+.size-btn {
+    background: #ff2f00;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    margin: 5px 0;
+    border-radius: 8px;
+    cursor: pointer;
+    display: block;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.size-btn:hover {
+    background: #e02600;
+    transform: scale(1.05);
+    color: white;
+}
+
+/* Checkout button */
+.checkout-btn {
+    transition: all 0.3s ease;
+}
+
+.checkout-btn:hover {
+    background: #e02600 !important;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.4) !important;
+}

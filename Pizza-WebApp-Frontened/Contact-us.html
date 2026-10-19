@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BENZO - Team</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="Contact-us.css">
+    <link rel="stylesheet" href="auth-shared.css">
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header" id="header">
+        <nav class="navbar">
+            <div class="navbar-left">
+                <button class="menu-btn" id="menuBtn" aria-label="Open menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <a href="Home.html" class="logo">
+                    <i class="fas fa-pizza-slice"></i> BENZO
+                </a>
+            </div>
+            <div class="navbar-right">
+                <!-- ─── LOGGED OUT ─── -->
+                <div id="authGroupLoggedOut" style="display:flex; gap:15px; align-items:center;">
+                    <a href="login.html" class="signup-btn" id="loginNavBtn">
+                        <i class="fas fa-right-to-bracket"></i> Login
+                    </a>
+                    <a href="sign-up.html" class="signup-btn" id="signupNavBtn">
+                        <i class="fas fa-user-plus"></i> Sign Up
+                    </a>
+                </div>
+                <!-- ─── LOGGED IN ─── -->
+                <div id="authGroupLoggedIn" style="display:none; gap:15px; align-items:center;">
+                    <a href="dashboard.html" class="signup-btn" id="dashboardNavBtn" style="background: linear-gradient(180deg, #28a745, #218838);">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </a>
+                    <button class="signup-btn" id="logoutNavBtn" style="background: #dc3545; border:none; padding:12px 20px; border-radius:10px; font-weight:600; cursor:pointer; color:white;">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+                <!-- ─── CART ─── -->
+                <a href="checkout.html" class="cart-btn">
+                    <i class="fas fa-shopping-cart"></i> Cart
+                    <span class="cart-count" id="cartCount">0</span>
+                </a>
+            </div>
+        </nav>
+    </header>
+    
+    <!-- SIDEBAR - WITH DASHBOARD LINK REMOVED -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h3 class="sidebar-title">Menu</h3>
+            <button class="close-btn" id="closeBtn" aria-label="Close menu">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <ul class="sidebar-nav">
+            <!-- ─── REGULAR PAGES ─── -->
+            <li><a href="Home.html"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="About.html" class="active"><i class="fas fa-info-circle"></i> About</a></li>
+            <li><a href="Menue.html"><i class="fas fa-utensils"></i> Menu</a></li>
+            <li><a href="custom.html"><i class="fas fa-sliders-h"></i> Customize</a></li>
+            <li><a href="blog.html"><i class="fas fa-blog"></i> Blog</a></li>
+            <li><a href="Contact-us.html"><i class="fas fa-address-book"></i> Contact Us</a></li>
+            <li><a href="order-history.html"><i class="fas fa-clipboard-list"></i> Orders</a></li>
+            
+            <!-- ✅ REMOVED: <li><a href="dashboard.html">Dashboard</a></li> -->
+            <!-- JavaScript adds Dashboard/Logout dynamically -->
+            
+            <!-- ─── CART BUTTON (MOBILE/TABLET) ─── -->
+            <li class="sidebar-cart-btn">
+                <a href="checkout.html" class="sidebar-cart-link">
+                    <i class="fas fa-shopping-cart"></i> Cart
+                    <span class="sidebar-cart-count" id="sidebarCartCount">0</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    
+    <!-- OVERLAY -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- CART NOTIFICATION -->
+    <div id="cartNotification" class="cart-notify">
+        Added to cart! 🍕
+    </div>
+
+    <div class="container">
+        <!-- PAGE HEADING -->
+        <h1 class="page-title">Meet Our Team</h1>
+        
+        <!-- TEAM CARDS GRID -->
+        <div class="team-grid">
+            <!-- OWNER CARD -->
+            <div class="team-card">
+                <h2><i class="fas fa-crown"></i> OWNER</h2>
+                <h3>Lahore</h3>
+                
+                <img src="images/uzair.jpg" alt="Rana Uzair - Owner" class="team-image" 
+                     onerror="this.src='https://via.placeholder.com/140/ff5a2e/ffffff?text=RANA+UZAIR'">
+                
+                <div class="team-info">
+                    <div class="team-name">RANA UZAIR</div>
+                    <div class="team-role">Owner & Founder</div>
+                    <p class="team-contact">
+                        CONTACT NUMBER: +92 42 1234567<br>
+                        EMAIL: rana.uzair@pizzapalace.com
+                    </p>
+                </div>
+                
+                <button class="team-btn" id="ownerBtn">
+                    <i class="fas fa-phone-alt"></i> Contact Now
+                </button>
+            </div>
+
+            <!-- MANAGER CARD -->
+            <div class="team-card">
+                <h2><i class="fas fa-user-tie"></i> MANAGER</h2>
+                <h3>Lahore</h3>
+                
+                <img src="images/AR.jpg" alt="abdul_raheem - Manager" class="team-image"
+                     onerror="this.src='https://via.placeholder.com/140/ff7a4c/ffffff?text=abdul_raheem'">
+                
+                <div class="team-info">
+                    <div class="team-name">ABDUL RAHEEM</div>
+                    <div class="team-role">General Manager</div>
+                    <p class="team-contact">
+                        CONTACT NUMBER: +92 42 2345678<br>
+                        EMAIL: abdul_raheem.manager@pizzapalace.com
+                    </p>
+                </div>
+                
+                <button class="team-btn" id="managerBtn">
+                    <i class="fas fa-phone-alt"></i> Contact Now
+                </button>
+            </div>
+
+            <!-- SUPERVISOR CARD -->
+            <div class="team-card">
+                <h2><i class="fas fa-clipboard-check"></i> SUPERVISOR</h2>
+                <h3>Lahore</h3>
+                
+                <img src="images/saad.jpg" alt="Saad - Supervisor" class="team-image"
+                     onerror="this.src='https://via.placeholder.com/140/ff9d7a/ffffff?text=SUPERVISOR'">
+                
+                <div class="team-info">
+                    <div class="team-name">SAAD</div>
+                    <div class="team-role">Operations Supervisor</div>
+                    <p class="team-contact">
+                        CONTACT NUMBER: +92 42 3456789<br>
+                        EMAIL: saad.supervisor@pizzapalace.com
+                    </p>
+                </div>
+                
+                <button class="team-btn" id="supervisorBtn">
+                    <i class="fas fa-phone-alt"></i> Contact Now
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Pizza Palace</h3>
+                <p>Delivering happiness, one slice at a time. Experience the taste of perfection with our artisanal pizzas made with love and the finest ingredients.</p>
+                <div class="footer-social">
+                    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="Home.html">Home</a></li>
+                    <li><a href="Menue.html">Menu</a></li>
+                    <li><a href="custom.html">Customize Pizza</a></li>
+                    <li><a href="About.html">About Us</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="Contact-us.html">Contact Us</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Contact Info</h3>
+                <p><i class="fas fa-map-marker-alt"></i> 123 Pizza Street, Food City, FC 12345</p>
+                <p><i class="fas fa-phone"></i> (123) 456-7890</p>
+                <p><i class="fas fa-envelope"></i> info@pizzapalace.com</p>
+                <p><i class="fas fa-clock"></i> Open Daily: 11:00 AM - 11:00 PM</p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2024 Pizza Palace. All rights reserved. | Designed with <i class="fas fa-heart" style="color: #ff5a2e;"></i> for pizza lovers</p>
+        </div>
+    </footer>
+
+    <script src="api.js"></script>
+    <script src="navbar.js"></script>
+    <script src="Contact-us.js"></script>
+</body>
+</html>

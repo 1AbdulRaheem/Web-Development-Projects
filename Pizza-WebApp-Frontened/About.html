@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BENZO - About Us</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="About.css">
+    <link rel="stylesheet" href="auth-shared.css">
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header" id="header">
+        <nav class="navbar">
+            <div class="navbar-left">
+                <button class="menu-btn" id="menuBtn" aria-label="Open menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <a href="Home.html" class="logo">
+                    <i class="fas fa-pizza-slice"></i> BENZO
+                </a>
+            </div>
+            <div class="navbar-right">
+                <!-- ─── LOGGED OUT ─── -->
+                <div id="authGroupLoggedOut" style="display:flex; gap:15px; align-items:center;">
+                    <a href="login.html" class="signup-btn" id="loginNavBtn">
+                        <i class="fas fa-right-to-bracket"></i> Login
+                    </a>
+                    <a href="sign-up.html" class="signup-btn" id="signupNavBtn">
+                        <i class="fas fa-user-plus"></i> Sign Up
+                    </a>
+                </div>
+                <!-- ─── LOGGED IN ─── -->
+                <div id="authGroupLoggedIn" style="display:none; gap:15px; align-items:center;">
+                    <a href="dashboard.html" class="signup-btn" id="dashboardNavBtn" style="background: linear-gradient(180deg, #28a745, #218838);">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </a>
+                    <button class="signup-btn" id="logoutNavBtn" style="background: #dc3545; border:none; padding:12px 20px; border-radius:10px; font-weight:600; cursor:pointer; color:white;">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+                <!-- ─── CART ─── -->
+                <a href="checkout.html" class="cart-btn">
+                    <i class="fas fa-shopping-cart"></i> Cart
+                    <span class="cart-count" id="cartCount">0</span>
+                </a>
+            </div>
+        </nav>
+    </header>
+    
+    <!-- SIDEBAR - WITH DASHBOARD LINK REMOVED -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h3 class="sidebar-title">Menu</h3>
+            <button class="close-btn" id="closeBtn" aria-label="Close menu">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <ul class="sidebar-nav">
+            <!-- ─── REGULAR PAGES ─── -->
+            <li><a href="Home.html"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="About.html" class="active"><i class="fas fa-info-circle"></i> About</a></li>
+            <li><a href="Menue.html"><i class="fas fa-utensils"></i> Menu</a></li>
+            <li><a href="custom.html"><i class="fas fa-sliders-h"></i> Customize</a></li>
+            <li><a href="blog.html"><i class="fas fa-blog"></i> Blog</a></li>
+            <li><a href="Contact-us.html"><i class="fas fa-address-book"></i> Contact Us</a></li>
+            <li><a href="order-history.html"><i class="fas fa-clipboard-list"></i> Orders</a></li>
+            
+            <!-- ✅ REMOVED: <li><a href="dashboard.html">Dashboard</a></li> -->
+            <!-- JavaScript adds Dashboard/Logout dynamically -->
+            
+            <!-- ─── CART BUTTON (MOBILE/TABLET) ─── -->
+            <li class="sidebar-cart-btn">
+                <a href="checkout.html" class="sidebar-cart-link">
+                    <i class="fas fa-shopping-cart"></i> Cart
+                    <span class="sidebar-cart-count" id="sidebarCartCount">0</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    
+    <!-- OVERLAY -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- CART NOTIFICATION -->
+    <div id="cartNotification" class="cart-notify">
+        Added to cart! 🍕
+    </div>
+
+    <div class="container">
+        <h1>🍕 About BENZO</h1>
+        
+        <div class="intro-section">
+            <h2><i class="fas fa-store"></i> Our Story</h2>
+            <p>Founded in 2010, Pizza Palace started as a small family-owned restaurant in Lahore with a simple mission: to serve the most delicious, authentic pizzas using only the finest ingredients. Today, we have expanded to multiple cities across Pakistan, but our commitment to quality and family values remains unchanged.</p>
+            <p>We believe that great pizza brings people together, and we're proud to be part of your family gatherings, celebrations, and everyday moments of joy.</p>
+        </div>
+
+        <div class="cards-grid">
+            <!-- HEAD OFFICE CARD -->
+            <div class="card">
+                <h2><i class="fas fa-building"></i> Head Office</h2>
+                <ul>
+                    <li><i class="fas fa-map-marker-alt" style="color: #ff5a2e; margin-right: 8px;"></i> Lahore, Pakistan</li>
+                    <li><i class="fas fa-phone" style="color: #ff5a2e; margin-right: 8px;"></i> +92 42 1234567</li>
+                    <li><i class="fas fa-envelope" style="color: #ff5a2e; margin-right: 8px;"></i> headoffice@pizzapalace.com</li>
+                    <li><i class="fas fa-clock" style="color: #ff5a2e; margin-right: 8px;"></i> Open: 11:00 AM - 11:00 PM</li>
+                </ul>
+                
+                <img src="images/uzair.jpg" alt="Rana Uzair - Owner" class="owner-image" onerror="this.src='https://via.placeholder.com/120/ff5a2e/ffffff?text=RANA+UZAIR'">
+                
+                <div class="owner-info">
+                    <div class="owner-name">RANA UZAIR</div>
+                    <div class="owner-title">FOUNDER & OWNER</div>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 8px;">"Great pizza starts with great passion. We don't just make pizza, we create experiences."</p>
+                </div>
+                
+                <button class="btn">Stay Updated</button>
+            </div>
+
+            <!-- BRANCHES CARD -->
+            <div class="card">
+                <h2><i class="fas fa-code-branch"></i> Our Branches</h2>
+                <ul>
+                    <li><a href="karachi.html"><i class="fas fa-map-pin" style="margin-right: 8px;"></i> Karachi</a></li>
+                    <li><a href="multan.html"><i class="fas fa-map-pin" style="margin-right: 8px;"></i> Multan</a></li>
+                    <li><a href="hydrabad.html"><i class="fas fa-map-pin" style="margin-right: 8px;"></i> Hyderabad</a></li>
+                    <li><a href="pindi.html"><i class="fas fa-map-pin" style="margin-right: 8px;"></i> Rawalpindi</a></li>
+                    <li><a href="shahdadpur.html"><i class="fas fa-map-pin" style="margin-right: 8px;"></i> Shahdadpur</a></li>
+                    <li><a href="sargodha.html"><i class="fas fa-map-pin" style="margin-right: 8px;"></i> Sargodha</a></li>
+                    <li><a href="gujranwala.html"><i class="fas fa-map-pin" style="margin-right: 8px;"></i> Gujranwala</a></li>
+                </ul>
+                <button class="btn">View All Locations</button>
+            </div>
+
+            <!-- DELIVERY SERVICES CARD -->
+            <div class="card">
+                <h2><i class="fas fa-shipping-fast"></i> Delivery Partners</h2>
+                <ul>
+                    <li><a href="blue ex.html"><i class="fas fa-truck" style="margin-right: 8px;"></i> Blue Ex</a></li>
+                    <li><a href="bykea.html"><i class="fas fa-motorcycle" style="margin-right: 8px;"></i> Bykea</a></li>
+                    <li><a href="cell courier.html"><i class="fas fa-box" style="margin-right: 8px;"></i> Call Courier</a></li>
+                    <li><a href="tcs.html"><i class="fas fa-shipping-fast" style="margin-right: 8px;"></i> TCS</a></li>
+                    <li><a href="cheetay.html"><i class="fas fa-bolt" style="margin-right: 8px;"></i> Cheetay</a></li>
+                    <li><a href="yango.html"><i class="fas fa-car" style="margin-right: 8px;"></i> Yango Pro</a></li>
+                    <li><a href="uber drive.html"><i class="fas fa-taxi" style="margin-right: 8px;"></i> Uber Drive</a></li>
+                </ul>
+                <button class="btn">Track Your Order</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Pizza Palace</h3>
+                <p>Delivering happiness, one slice at a time. Experience the taste of perfection with our artisanal pizzas made with love and the finest ingredients.</p>
+                <div class="footer-social">
+                    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="Home.html">Home</a></li>
+                    <li><a href="Menue.html">Menu</a></li>
+                    <li><a href="custom.html">Customize Pizza</a></li>
+                    <li><a href="About.html">About Us</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="Contact-us.html">Contact Us</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Contact Info</h3>
+                <p><i class="fas fa-map-marker-alt"></i> 123 Pizza Street, Food City, FC 12345</p>
+                <p><i class="fas fa-phone"></i> (123) 456-7890</p>
+                <p><i class="fas fa-envelope"></i> info@pizzapalace.com</p>
+                <p><i class="fas fa-clock"></i> Open Daily: 11:00 AM - 11:00 PM</p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2024 Pizza Palace. All rights reserved. | Designed with <i class="fas fa-heart" style="color: #ff5a2e;"></i> for pizza lovers</p>
+        </div>
+    </footer>
+
+    <script src="api.js"></script>
+    <script src="navbar.js"></script>
+    <script src="About.js"></script>
+</body>
+</html>
