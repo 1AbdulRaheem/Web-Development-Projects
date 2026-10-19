@@ -1,31 +1,14 @@
-// WeatherVista - my weather app
-// Data from Open-Meteo (free API, no key needed)
-
 const byId = (id) => document.getElementById(id);
 
-// Open-Meteo returns a number for weather - this turns it into text + emoji
 const WEATHER_INFO = {
-  0:  ["Clear sky", "☀️"],
-  1:  ["Mainly clear", "🌤️"],
-  2:  ["Partly cloudy", "⛅"],
-  3:  ["Overcast", "☁️"],
-  45: ["Fog", "🌫️"],
-  48: ["Rime fog", "🌫️"],
-  51: ["Light drizzle", "🌦️"],
-  53: ["Drizzle", "🌦️"],
-  55: ["Dense drizzle", "🌧️"],
-  61: ["Slight rain", "🌦️"],
-  63: ["Moderate rain", "🌧️"],
-  65: ["Heavy rain", "🌧️"],
-  71: ["Slight snow", "🌨️"],
-  73: ["Moderate snow", "🌨️"],
-  75: ["Heavy snow", "❄️"],
-  80: ["Rain showers", "🌦️"],
-  81: ["Rain showers", "🌧️"],
-  82: ["Violent showers", "⛈️"],
-  95: ["Thunderstorm", "⛈️"],
-  96: ["Thunderstorm with hail", "⛈️"],
-  99: ["Thunderstorm with hail", "⛈️"]
+  0:  ["Clear sky", "☀️"],     1:  ["Mainly clear", "🌤️"],
+  2:  ["Partly cloudy", "⛅"], 3:  ["Overcast", "☁️"],
+  45: ["Fog", "🌫️"],           48: ["Rime fog", "🌫️"],
+  51: ["Light drizzle", "🌦️"], 53: ["Drizzle", "🌦️"],     55: ["Dense drizzle", "🌧️"],
+  61: ["Slight rain", "🌦️"],   63: ["Moderate rain", "🌧️"], 65: ["Heavy rain", "🌧️"],
+  71: ["Slight snow", "🌨️"],   73: ["Moderate snow", "🌨️"], 75: ["Heavy snow", "❄️"],
+  80: ["Rain showers", "🌦️"],  81: ["Rain showers", "🌧️"],  82: ["Violent showers", "⛈️"],
+  95: ["Thunderstorm", "⛈️"],  96: ["Thunderstorm with hail", "⛈️"], 99: ["Thunderstorm with hail", "⛈️"]
 };
 
 const RAIN_CODES = [61, 63, 65, 80, 81, 82, 95, 96, 99];
@@ -41,7 +24,7 @@ function load(key, fallback) {
   try {
     const raw = localStorage.getItem(key);
     return raw ? JSON.parse(raw) : fallback;
-  } catch {
+  } catch (error) {
     return fallback;
   }
 }
@@ -62,28 +45,24 @@ function infoFor(code) {
 function formatTemp(value) {
   if (value == null) return "—";
   const t = unit === "F" ? (value * 9) / 5 + 32 : value;
-  return Math.round(t) + "°";
+  return `${Math.round(t)}°`;
 }
 
-// 12-hour time with AM/PM
+// 12-hour time 
 function formatTime(value) {
   if (!value) return "—";
   const d = new Date(value);
   if (isNaN(d.getTime())) return "—";
-  return d.toLocaleTimeString([], {
-    hour: "numeric",
-    minute: "2-digit",
-    hour12: true
-  });
+  return d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit", hour12: true });
 }
 
 function formatDay(value) {
-  const d = new Date(value + "T12:00:00");
+  const d = new Date(`${value}T12:00:00`);
   return isNaN(d.getTime()) ? value : d.toLocaleDateString([], { weekday: "short" });
 }
 
 function formatDate(value) {
-  const d = new Date(value + "T12:00:00");
+  const d = new Date(`${value}T12:00:00`);
   return d.toLocaleDateString([], { month: "short", day: "numeric" });
 }
 
@@ -98,14 +77,10 @@ function directionName(deg) {
   return DIRECTIONS[Math.round(deg / 45) % 8];
 }
 
-function setStatus(message, isError) {
+function setStatus(message, isError = false) {
   const el = byId("statusMessage");
   el.textContent = message;
-  if (isError) {
-    el.classList.add("error");
-  } else {
-    el.classList.remove("error");
-  }
+  el.classList.toggle("error", isError);
 }
 
 function showToast(message) {
@@ -113,9 +88,7 @@ function showToast(message) {
   toast.textContent = message;
   toast.classList.add("show");
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => {
-    toast.classList.remove("show");
-  }, 2600);
+  toastTimer = setTimeout(() => toast.classList.remove("show"), 2600);
 }
 
 function setLoading(value) {
@@ -127,20 +100,17 @@ function setLoading(value) {
   searchBtn.disabled = value;
   locBtn.disabled = value;
   if (refreshBtn) refreshBtn.disabled = value;
+  
   searchBtn.textContent = value ? "Loading…" : "Search ↗";
 }
 
 // switch between home / favorites / settings
 function showPage(name) {
-  document.querySelectorAll(".page").forEach((p) => p.classList.remove("active"));
-  byId("page-" + name).classList.add("active");
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  byId(`page-${name}`).classList.add("active");
 
-  document.querySelectorAll(".nav-link").forEach((link) => {
-    if (link.dataset.page === name) {
-      link.classList.add("active");
-    } else {
-      link.classList.remove("active");
-    }
+  document.querySelectorAll(".nav-link").forEach(link => {
+    link.classList.toggle("active", link.dataset.page === name);
   });
 
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -152,22 +122,14 @@ function selectCity(name) {
 }
 
 async function searchCity(name) {
-  const params = new URLSearchParams({
-    name: name,
-    count: "1",
-    language: "en",
-    format: "json"
-  });
-  const url = "https://geocoding-api.open-meteo.com/v1/search?" + params;
-
-  const res = await fetch(url);
-  if (!res.ok) {
-    throw new Error("Weather service error (" + res.status + ").");
-  }
+  const params = new URLSearchParams({ name, count: "1", language: "en", format: "json" });
+  const res = await fetch(`https://geocoding-api.open-meteo.com/v1/search?${params}`);
+  
+  if (!res.ok) throw new Error(`Weather service error (${res.status}).`);
 
   const data = await res.json();
-  if (!data.results || data.results.length === 0) {
-    throw new Error('Could not find "' + name + '". Try a nearby city.');
+  if (!data.results?.length) {
+    throw new Error(`Could not find "${name}". Try a nearby city.`);
   }
   return data.results[0];
 }
@@ -176,7 +138,7 @@ async function getForecast(place) {
   const params = new URLSearchParams({
     latitude: place.latitude,
     longitude: place.longitude,
-    current: "temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,cloud_cover,pressure_msl,wind_speed_10m,wind_direction_10m,wind_gusts_10m,precipitation",
+    current: "temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,cloud_cover,pressure_msl,wind_speed_10m,wind_direction_10m,wind_gusts_10m,precipitation,is_day",
     hourly: "temperature_2m,weather_code",
     daily: "weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max,precipitation_probability_max,precipitation_sum",
     temperature_unit: "celsius",
@@ -185,32 +147,32 @@ async function getForecast(place) {
     forecast_days: "7",
     forecast_hours: "24"
   });
-  const url = "https://api.open-meteo.com/v1/forecast?" + params;
-
-  const res = await fetch(url);
-  if (!res.ok) {
-    throw new Error("Weather service error (" + res.status + ").");
-  }
+  
+  const res = await fetch(`https://api.open-meteo.com/v1/forecast?${params}`);
+  if (!res.ok) throw new Error(`Weather service error (${res.status}).`);
   return res.json();
 }
 
 function showWeather(place, data) {
-  const now = data.current;
-  const daily = data.daily;
+  const { current: now, daily } = data; // Destructuring (modern & clean)
   const info = infoFor(now.weather_code);
 
-  byId("cityName").textContent = place.name;
+  // Dynamic Day/Night Art
+  const artContainer = document.querySelector(".current-art");
+  if (now.is_day === 0) {
+    artContainer.classList.add("night");
+  } else {
+    artContainer.classList.remove("night");
+  }
 
+  byId("cityName").textContent = place.name;
+  
   const metaParts = [place.admin1, place.country].filter(Boolean);
   byId("locationMeta").textContent = metaParts.join(", ") || "Selected location";
 
   byId("currentDate").textContent = new Date(now.time).toLocaleString([], {
-    weekday: "long",
-    month: "short",
-    day: "numeric",
-    hour: "numeric",
-    minute: "2-digit",
-    hour12: true
+    weekday: "long", month: "short", day: "numeric",
+    hour: "numeric", minute: "2-digit", hour12: true
   });
 
   byId("currentIcon").textContent = info[1];
@@ -219,46 +181,41 @@ function showWeather(place, data) {
   byId("conditionText").textContent = info[0];
   byId("feelsLike").textContent = formatTemp(now.apparent_temperature);
 
-  byId("humidity").textContent = now.relative_humidity_2m + "%";
-  byId("windSpeed").textContent = Math.round(now.wind_speed_10m) + " km/h";
-  byId("pressure").textContent = Math.round(now.pressure_msl) + " hPa";
-  byId("cloudCover").textContent = now.cloud_cover + "%";
+  byId("humidity").textContent = `${now.relative_humidity_2m}%`;
+  byId("windSpeed").textContent = `${Math.round(now.wind_speed_10m)} km/h`;
+  byId("pressure").textContent = `${Math.round(now.pressure_msl)} hPa`;
+  byId("cloudCover").textContent = `${now.cloud_cover}%`;
 
   byId("highlightFeels").textContent = formatTemp(now.apparent_temperature);
-  byId("highlightHumidity").textContent = now.relative_humidity_2m + "%";
-  byId("highlightWind").textContent = Math.round(now.wind_speed_10m) + " km/h";
+  byId("highlightHumidity").textContent = `${now.relative_humidity_2m}%`;
+  byId("highlightWind").textContent = `${Math.round(now.wind_speed_10m)} km/h`;
 
-  const uv = daily.uv_index_max && daily.uv_index_max[0];
-  byId("uvIndex").textContent = uv != null ? uv + " " + uvLabel(uv) : "—";
-  byId("sunrise").textContent = formatTime(daily.sunrise[0]);
-  byId("sunset").textContent = formatTime(daily.sunset[0]);
+  const uv = daily.uv_index_max?.[0];
+  byId("uvIndex").textContent = uv != null ? `${uv} ${uvLabel(uv)}` : "—";
+  
+  byId("sunrise").textContent = formatTime(daily.sunrise?.[0]);
+  byId("sunset").textContent = formatTime(daily.sunset?.[0]);
 
-  // precipitation card
-  const chance = daily.precipitation_probability_max
-    ? daily.precipitation_probability_max[0]
-    : 0;
-  byId("precipChance").textContent = (chance || 0) + "%";
-  byId("precipNow").textContent = (now.precipitation || 0) + " mm";
-  byId("precipMax").textContent = (daily.precipitation_sum[0] || 0) + " mm";
+  // Precipitation card
+  byId("precipChance").textContent = `${daily.precipitation_probability_max?.[0] ?? 0}%`;
+  byId("precipNow").textContent = `${now.precipitation ?? 0} mm`;
+  byId("precipMax").textContent = `${daily.precipitation_sum?.[0] ?? 0} mm`;
 
-  // wind compass - arrow rotates to show where the wind comes from
+  // Wind compass
   const windSpeed = now.wind_speed_10m || 0;
   const gusts = now.wind_gusts_10m || 0;
   const windDeg = now.wind_direction_10m || 0;
 
-  byId("windValue").textContent = Math.round(windSpeed) + " km/h";
-  byId("windGusts").textContent = Math.round(gusts) + " km/h";
-  byId("windDir").textContent = directionName(windDeg) + " (" + Math.round(windDeg) + "°)";
-  byId("windArrow").style.transform = "rotate(" + windDeg + "deg)";
+  byId("windValue").textContent = `${Math.round(windSpeed)} km/h`;
+  byId("windGusts").textContent = `${Math.round(gusts)} km/h`;
+  byId("windDir").textContent = `${directionName(windDeg)} (${Math.round(windDeg)}°)`;
+  byId("windArrow").style.transform = `rotate(${windDeg}deg)`;
 
+  // Favorite heart
   const fav = byId("favoriteButton");
-  if (isFavorite(place.name)) {
-    fav.textContent = "♥";
-    fav.setAttribute("aria-pressed", "true");
-  } else {
-    fav.textContent = "♡";
-    fav.setAttribute("aria-pressed", "false");
-  }
+  const isSaved = isFavorite(place.name);
+  fav.textContent = isSaved ? "♥" : "♡";
+  fav.setAttribute("aria-pressed", String(isSaved));
 
   showHourly(data.hourly, now.time);
   showDaily(daily);
@@ -267,74 +224,64 @@ function showWeather(place, data) {
 
 function showHourly(hourly, currentTime) {
   const box = byId("hourlyForecast");
-  box.innerHTML = "";
+  box.innerHTML = ""; // Clear old data
 
-  // find the first hour that is >= current time
-  let start = 0;
-  for (let i = 0; i < hourly.time.length; i++) {
-    if (hourly.time[i] >= currentTime) {
-      start = i;
-      break;
-    }
-  }
+  let start = hourly.time.findIndex(t => t >= currentTime);
+  if (start === -1) start = 0;
 
   const end = Math.min(hourly.time.length, start + 6);
+  const nextSixHours = hourly.time.slice(start, end);
 
-  for (let i = start; i < end; i++) {
-    const info = infoFor(hourly.weather_code[i]);
-    const label = i === start ? "Now" : formatTime(hourly.time[i]);
+  nextSixHours.forEach((timeVal, index) => {
+    const info = infoFor(hourly.weather_code[start + index]);
+    const label = index === 0 ? "Now" : formatTime(timeVal);
 
     const card = document.createElement("div");
     card.className = "hour-card";
-    card.innerHTML =
-      '<div class="hour-time">' + label + '</div>' +
-      '<span class="hour-icon">' + info[1] + '</span>' +
-      '<strong>' + formatTemp(hourly.temperature_2m[i]) + '</strong>';
+    card.innerHTML = `
+      <div class="hour-time">${label}</div>
+      <span class="hour-icon">${info[1]}</span>
+      <strong>${formatTemp(hourly.temperature_2m[start + index])}</strong>
+    `;
     box.appendChild(card);
-  }
+  });
 }
 
 function showDaily(daily) {
   const box = byId("dailyForecast");
   box.innerHTML = "";
 
-  for (let i = 0; i < daily.time.length; i++) {
-    const date = daily.time[i];
+  daily.time.forEach((date, i) => {
     const info = infoFor(daily.weather_code[i]);
     const name = i === 0 ? "Today" : formatDay(date);
 
     const card = document.createElement("div");
     card.className = "day-card";
-    card.innerHTML =
-      '<div class="day-name">' + name + '</div>' +
-      '<div class="day-date">' + formatDate(date) + '</div>' +
-      '<span class="day-icon">' + info[1] + '</span>' +
-      '<div class="day-high">' + formatTemp(daily.temperature_2m_max[i]) + '</div>' +
-      '<div class="day-low">' + formatTemp(daily.temperature_2m_min[i]) + '</div>';
+    card.innerHTML = `
+      <div class="day-name">${name}</div>
+      <div class="day-date">${formatDate(date)}</div>
+      <span class="day-icon">${info[1]}</span>
+      <div class="day-high">${formatTemp(daily.temperature_2m_max[i])}</div>
+      <div class="day-low">${formatTemp(daily.temperature_2m_min[i])}</div>
+    `;
     box.appendChild(card);
-  }
+  });
 }
 
 function showInsight(now) {
-  let icon = "🌤️";
-  let title = "Enjoy your day";
-  let tip = "Conditions look comfortable. Check the forecast before heading out.";
+  let icon = "🌤️", title = "Enjoy your day", tip = "Conditions look comfortable. Check the forecast before heading out.";
 
   if (RAIN_CODES.includes(now.weather_code)) {
-    icon = "☔";
-    title = "Consider taking an umbrella";
+    icon = "☔"; title = "Consider taking an umbrella";
     tip = "Rain or storms are reported. Bring rain protection.";
   } else if (now.temperature_2m >= 32) {
-    icon = "🧴";
-    title = "Stay cool and hydrated";
+    icon = "🧴"; title = "Stay cool and hydrated";
     tip = "It's warm outside. Drink water and rest in the shade.";
   } else if (now.temperature_2m <= 8) {
-    icon = "🧣";
-    title = "Dress for the chill";
+    icon = "🧣"; title = "Dress for the chill";
     tip = "Cool conditions - consider an extra layer.";
   } else if (now.wind_speed_10m >= 30) {
-    icon = "💨";
-    title = "Windy conditions";
+    icon = "💨"; title = "Windy conditions";
     tip = "Secure loose items outdoors.";
   }
 
@@ -344,15 +291,12 @@ function showInsight(now) {
 }
 
 function isFavorite(name) {
-  for (let i = 0; i < favorites.length; i++) {
-    if (favorites[i].toLowerCase() === name.toLowerCase()) return true;
-  }
-  return false;
+  return favorites.some(city => city.toLowerCase() === name.toLowerCase());
 }
 
 function showFavorites() {
   const box = byId("favoriteList");
-  byId("favoriteCount").textContent = favorites.length + " saved";
+  byId("favoriteCount").textContent = `${favorites.length} saved`;
   box.innerHTML = "";
 
   if (favorites.length === 0) {
@@ -360,25 +304,24 @@ function showFavorites() {
     return;
   }
 
-  favorites.forEach((name) => {
+  favorites.forEach(cityName => {
     const row = document.createElement("div");
     row.className = "saved-city";
 
     const open = document.createElement("button");
     open.className = "city-open";
     open.type = "button";
-    open.textContent = "⌖  " + name;
-    open.addEventListener("click", () => selectCity(name));
+    open.textContent = `⌖  ${cityName}`;
+    open.addEventListener("click", () => selectCity(cityName));
 
     const remove = document.createElement("button");
     remove.className = "remove-city";
     remove.type = "button";
     remove.textContent = "×";
-    remove.setAttribute("aria-label", "Remove " + name);
-    remove.addEventListener("click", () => removeFavorite(name));
+    remove.setAttribute("aria-label", `Remove ${cityName}`);
+    remove.addEventListener("click", () => removeFavorite(cityName));
 
-    row.appendChild(open);
-    row.appendChild(remove);
+    row.append(open, remove);
     box.appendChild(row);
   });
 }
@@ -392,15 +335,15 @@ function showRecent() {
     return;
   }
 
-  recent.forEach((name) => {
+  recent.forEach(cityName => {
     const row = document.createElement("div");
     row.className = "recent-city";
 
     const open = document.createElement("button");
     open.className = "city-open";
     open.type = "button";
-    open.textContent = "◷  " + name;
-    open.addEventListener("click", () => selectCity(name));
+    open.textContent = `◷  ${cityName}`;
+    open.addEventListener("click", () => selectCity(cityName));
 
     row.appendChild(open);
     box.appendChild(row);
@@ -408,11 +351,11 @@ function showRecent() {
 }
 
 function removeFavorite(name) {
-  favorites = favorites.filter((c) => c.toLowerCase() !== name.toLowerCase());
+  favorites = favorites.filter(c => c.toLowerCase() !== name.toLowerCase());
   save("weathervista:favorites", favorites);
   showFavorites();
   if (currentPlace) showWeather(currentPlace, currentData);
-  showToast(name + " removed from favorites.");
+  showToast(`${name} removed from favorites.`);
 }
 
 function toggleFavorite() {
@@ -424,26 +367,23 @@ function toggleFavorite() {
     return;
   }
 
-  favorites.unshift(name);
-  if (favorites.length > 8) favorites.pop();
-
+  // Add to the front and limit to 8
+  favorites = [name, ...favorites].slice(0, 8);
   save("weathervista:favorites", favorites);
   showFavorites();
   showWeather(currentPlace, currentData);
-  showToast(name + " added to favorites.");
+  showToast(`${name} added to favorites.`);
 }
 
 function addRecent(name) {
-  recent = recent.filter((c) => c.toLowerCase() !== name.toLowerCase());
-  recent.unshift(name);
-  if (recent.length > 6) recent.pop();
+  const filtered = recent.filter(c => c.toLowerCase() !== name.toLowerCase());
+  recent = [name, ...filtered].slice(0, 6);
   save("weathervista:recent", recent);
   showRecent();
 }
 
 // addToRecent is only true when the user actually typed + pressed Search.
-// Page load, refresh, and geolocation do NOT add to the list.
-async function loadCity(name, addToRecent) {
+async function loadCity(name, addToRecent = false) {
   if (loading) return;
 
   name = name.trim();
@@ -453,7 +393,7 @@ async function loadCity(name, addToRecent) {
   }
 
   setLoading(true);
-  setStatus("Finding weather for " + name + "…");
+  setStatus(`Finding weather for ${name}…`);
 
   try {
     const place = await searchCity(name);
@@ -466,7 +406,7 @@ async function loadCity(name, addToRecent) {
 
     if (addToRecent) addRecent(place.name);
 
-    setStatus("Weather updated for " + place.name + ".");
+    setStatus(`Weather updated for ${place.name}.`);
     byId("cityInput").value = "";
   } catch (error) {
     setStatus(error.message, true);
@@ -487,7 +427,7 @@ async function refreshCurrent() {
     const data = await getForecast(currentPlace);
     currentData = data;
     showWeather(currentPlace, data);
-    setStatus("Weather updated for " + currentPlace.name + ".");
+    setStatus(`Weather updated for ${currentPlace.name}.`);
   } catch (error) {
     setStatus(error.message, true);
   }
@@ -529,11 +469,7 @@ function useMyLocation() {
     },
     (error) => {
       setLoading(false);
-      if (error.code === 1) {
-        setStatus("Location permission denied. Search for a city instead.", true);
-      } else {
-        setStatus("Could not get your location. Try again.", true);
-      }
+      setStatus(error.code === 1 ? "Location permission denied." : "Could not get your location.", true);
     }
   );
 }
@@ -557,19 +493,16 @@ function toggleTheme() {
 }
 
 // wiring
-
 byId("searchForm").addEventListener("submit", (e) => {
   e.preventDefault();
-  loadCity(byId("cityInput").value, true); // true = real search
+  loadCity(byId("cityInput").value, true); 
 });
 
 byId("locationButton").addEventListener("click", useMyLocation);
 byId("favoriteButton").addEventListener("click", toggleFavorite);
 byId("refreshButton").addEventListener("click", refreshCurrent);
-
 byId("celsiusButton").addEventListener("click", () => changeUnit("C"));
 byId("fahrenheitButton").addEventListener("click", () => changeUnit("F"));
-
 byId("themeToggle").addEventListener("click", toggleTheme);
 byId("themeSettingButton").addEventListener("click", toggleTheme);
 
@@ -580,7 +513,7 @@ byId("clearRecent").addEventListener("click", () => {
   showToast("Recent searches cleared.");
 });
 
-document.querySelectorAll(".nav-link").forEach((link) => {
+document.querySelectorAll(".nav-link").forEach(link => {
   link.addEventListener("click", (e) => {
     e.preventDefault();
     showPage(link.dataset.page);
@@ -593,7 +526,6 @@ document.querySelector(".brand").addEventListener("click", (e) => {
 });
 
 // start
-
 if (isLight) {
   document.body.classList.add("light-theme");
   byId("themeToggle").textContent = "☀";
