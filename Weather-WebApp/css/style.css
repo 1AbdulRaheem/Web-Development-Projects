@@ -1023,7 +1023,6 @@ body.light-theme .current-art { opacity: .45; }
   .weather-emoji { font-size: 52px; }
 
   .current-panel { min-height: 355px; }
-  .current-art { right: -50px; }
 
   .hourly-list { grid-template-columns: repeat(6, 76px); }
   .section-heading h2 { font-size: 14px; }
